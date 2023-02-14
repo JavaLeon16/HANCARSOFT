@@ -1,0 +1,357 @@
+<div class="contenedor">
+  <div class="container-fluid px-2">
+
+    <fieldset class="scheduler-border-hijo">
+      <legend class="scheduler-border-hijo">Captura Producción</legend>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+          <div class="input-group">
+            <input type="number" class="form-control" placeholder="Programa" [(ngModel)]="camposGenerales.programa">
+            <div class="input-group-append">
+              <button class="btn btn-info" type="button" (click)="btnBuscarPrograma()">
+                <span class="fas fa-search"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m3_txtMaquina">Máquina:</label>
+            </div>
+            <input id="m3_txtMaquina" type="text" class="form-control" [(ngModel)]="camposGenerales.claveMaquina" [title]="camposGenerales.claveMaquina" disabled>
+            <!-- <select id="m3_cbxMaquina" class="custom-select">
+              <option value="1">Máquina 1</option>
+              <option value="2">Máquina 2</option>
+              <option value="3">Máquina 3</option>
+            </select> -->
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m3_txtTurno">Turno:</label>
+            </div>
+            <input id="m3_txtTurno" type="text" class="form-control" [(ngModel)]="camposGenerales.turno" [title]="camposGenerales.turno" (change)="txtTurno_Change()" [value]="camposGenerales.turno" disabled>
+            <!-- <select id="m3_cbxTurno" class="custom-select">
+              <option value="1">Turno 1</option>
+              <option value="2">Turno 2</option>
+              <option value="3">Turno 3</option>
+            </select> -->
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m3_txtFecha">Fecha:</label>
+            </div>
+            <input id="m3_txtFecha" type="date" class="form-control" [(ngModel)]="camposGenerales.fecha" [title]="camposGenerales.fecha">
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m3_txtHoraInicio">Hora Inicio:</label>
+            </div>
+            <input id="m3_txtHoraInicio" type="text" class="form-control" placeholder="00:00" [(ngModel)]="camposGenerales.horaIni">
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m3_txtHoraFin">Hora Fin:</label>
+            </div>
+            <input id="m3_txtHoraFin" type="text" class="form-control" placeholder="00:00" [(ngModel)]="camposGenerales.horaFin">
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m3_cbxSupervisor">Supervisor:</label>
+            </div>
+            <select id="m3_cbxSupervisor" class="custom-select">
+              <option value="1">Supervisor 1</option>
+              <option value="2">Supervisor 2</option>
+              <option value="3">Supervisor 3</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m3_cbxTripulacion">Tripulación:</label>
+            </div>
+            <select id="m3_cbxTripulacion" class="custom-select" [(ngModel)]="datosTripulaciones.selected">
+              <option *ngFor="let dato of datosTripulaciones.datos" value="{{dato.idTripulacion}}">
+                {{dato.tripulacion}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2 text-right px-1">
+          <div class="form-check form-check-inline">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input class="form-check-input" type="checkbox" id="m3_chkUltimoProceso" [(ngModel)]="camposGenerales.ultimoProceso">
+                  <label class="form-check-label" for="m3_chkUltimoProceso">Último Proceso</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+          <fieldset class="scheduler-border-hijo">
+            <legend class="scheduler-border-hijo">Datos Master</legend>
+            <div class="row">
+              <div class="col-12 col-sm-4 col-md-5 col-lg-12 col-xl-5 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="m3_txtOP">OP:</label>
+                  </div>
+                  <input id="m3_txtOP" type="text" class="form-control" [(ngModel)]="camposGenerales.op" [title]="camposGenerales.op" disabled>
+                </div>
+              </div>
+              <div class="col-12 col-sm-8 col-md-7 col-lg-12 col-xl-7 mt-2 mt-sm-0 mt-md-0 mt-lg-2 mt-xl-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="m3_txtClaveArticulo">Clave Artículo:</label>
+                  </div>
+                  <input id="m3_txtClaveArticulo" type="text" class="form-control" [(ngModel)]="camposGenerales.claveArticulo" [title]="camposGenerales.claveArticulo" disabled>
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="m3_txtArticulo">Artículo:</label>
+                  </div>
+                  <input id="m3_txtArticulo" type="text" class="form-control" [(ngModel)]="camposGenerales.articulo" [title]="camposGenerales.articulo" disabled>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+          <fieldset class="scheduler-border-hijo">
+            <legend class="scheduler-border-hijo">Datos Producción</legend>
+            <div class="row">
+              <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="m3_txtCorte1">Corte 1:</label>
+                  </div>
+                  <input id="m3_txtCorte1" type="text" class="form-control" [(ngModel)]="camposGenerales.primerColor" [title]="camposGenerales.primerColor" disabled>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="m3_txtCorte2">Corte 2:</label>
+                  </div>
+                  <input id="m3_txtCorte2" type="text" class="form-control" [(ngModel)]="camposGenerales.segundoColor" [title]="camposGenerales.segundoColor" disabled>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="m3_txtCorte3">Corte 3:</label>
+                  </div>
+                  <input id="m3_txtCorte3" type="text" class="form-control" [(ngModel)]="camposGenerales.tercerColor" [title]="camposGenerales.tercerColor" disabled>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="m3_txtCorte4">Corte 4:</label>
+                  </div>
+                  <input id="m3_txtCorte6" type="text" class="form-control" [(ngModel)]="camposGenerales.cuartoColor" [title]="camposGenerales.cuartoColor" disabled>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="m3_txtCantidad">Cantidad:</label>
+                  </div>
+                  <input id="m3_txtCantidad" type="text" class="form-control" [(ngModel)]="camposGenerales.cantidad" [title]="camposGenerales.cantidad" [disabled]="camposGenerales.ultimoProceso">
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="row mt-2">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Desperdicio</legend>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-12 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="m3_txtImpresora">Impresora:</label>
+                </div>
+                <input id="m3_txtImpresora" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-12 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-2">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="m3_txtCorrugadora">Corrugadora:</label>
+                </div>
+                <input id="m3_txtCorrugadora" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="m3_txtLinea">Línea:</label>
+                </div>
+                <input id="m3_txtLinea" type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Parafinadora</legend>
+          <div class="row">
+            <div class="col-12 col-sm-5 col-md-5 col-lg-6 col-xl-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="m3_txtPickUp">% Pick-Up:</label>
+                </div>
+                <input id="m3_txtPickUp" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-7 col-md-7 col-lg-6 col-xl-12 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-2">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="m3_cbxTipoParafina">Tipo Parafina:</label>
+                </div>
+                <select id="m3_cbxTipoParafina" class="custom-select">
+                  <option value="1">Parafina 1</option>
+                  <option value="2">Parafina 2</option>
+                  <option value="3">Parafina 3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
+        <fieldset class="scheduler-border">
+          <div class="row mt-2">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-12 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="m3_txtPesoLamina">Peso Lámina:</label>
+                </div>
+                <input id="m3_txtPesoLamina" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-12 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-2">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="m3_txtPesoCaja">Peso Caja:</label>
+                </div>
+                <input id="m3_txtPesoCaja" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="m3_txtRetrabajo">Retrabajo:</label>
+                </div>
+                <input id="m3_txtRetrabajo" type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+        <label>IdUnicoProducción: {{camposGenerales.idUnicoProduccion}}</label>
+      </div>
+      <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+        <div class="row justify-content-end">
+          <div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+            <button class="btn btn-success w-100">
+              <span class="fas fa-check"></span> Acepta
+            </button>
+          </div>
+          <div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+            <button class="btn btn-danger w-100">
+              <span class="fas fa-times"></span> Cancela
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Encontró datos al buscar Programa -->
+<ng-template #mdlValida let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title"><i class="fa fa-pencil"></i> Producción OP</h5>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <i class="fas fa-times" aria-hidden="true"></i>
+    </button> -->
+  </div>
+
+  <div class="modal-body">
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <label style="font-weight: bold;" *ngIf="datosGridValidacion.length > 0">{{datosGridValidacion[0].op}}</label>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
+          <grid-cs #gridValidacion
+            [columnDefs]="columnasGridValidacion"
+            [(data)]="datosGridValidacion"
+            [rowsPerPage]="8"
+            [enablePagination]="true">
+          </grid-cs>
+
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-end">
+          <!-- <button type="button" class="btn btn-success" (click)="mdlValida_clickAcepta()">
+            <span class="fas fa-check"></span>
+            Aceptar
+          </button> -->
+          <button type="button" class="btn btn-secondary ml-2" (click)="modal.dismiss()">
+            <span class="fas fa-undo"></span>
+            Regresar
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ng-template>
+
+
+
+<block-ui></block-ui>

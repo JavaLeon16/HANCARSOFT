@@ -1,0 +1,170 @@
+<div class="contenedor">
+  <div class="cabecera">
+    <label style="margin-left: 20px; margin-top: 10px;">{{tituloModulo}}</label>
+  </div>
+
+  <div class="container-fluid mt-2">
+    <fieldset class="scheduler-border">
+      <div class="row mt-2">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="txtFechaDel">Del:</label>
+            </div>
+            <input id="txtFechaDel" type="date" class="form-control" [(ngModel)]="camposGenerales.pFechaDel">
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="txtFechaAl">Al:</label>
+            </div>
+            <input id="txtFechaAl" type="date" class="form-control" [(ngModel)]="camposGenerales.pFechaAl">
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="cbxTurno">Turno:</label>
+            </div>
+            <select id="cbxTurno" class="custom-select">
+              <option value="1">Turno 1</option>
+              <option value="2">Turno 2</option>
+              <option value="3">Turno 3</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="cbxMaquina">Máquina:</label>
+            </div>
+            <select id="cbxMaquina" class="custom-select">
+              <option value="1">Máquina 1</option>
+              <option value="2">Máquina 2</option>
+              <option value="3">Máquina 3</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div class="form-check form-check-inline">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input class="form-check-input" type="checkbox" id="chkSinfecha">
+                  <label class="form-check-label" for="chkSinfecha">
+                    Mostrar solo registros sin fecha de producción
+                  </label>
+                </div>
+              </div>
+              <!-- <label class="form-check-label" for="chkSinfecha">
+                Mostrar solo registros sin fecha de producción
+              </label> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 text-left text-sm-left text-md-right text-lg-right text-xl-right mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-0">
+          <button class="btn btn-info w-50">
+            <span class="fas fa-search"></span> Buscar
+          </button>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="scheduler-border mt-2">
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="cbxSupervisor">Supervisor:</label>
+            </div>
+            <select id="cbxSupervisor" class="custom-select">
+              <option value="1">Supervisor 1</option>
+              <option value="2">Supervisor 2</option>
+              <option value="3">Supervisor 3</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="cbxTripulacion">Tripulación:</label>
+            </div>
+            <select id="cbxTripulacion" class="custom-select">
+              <option value="1">Tripulacion 1</option>
+              <option value="2">Tripulacion 2</option>
+              <option value="3">Tripulacion 3</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="txtFechaProd">Fecha Producción:</label>
+            </div>
+            <input id="txtFechaProd" type="date" class="form-control" [(ngModel)]="camposGenerales.pFechaProduccion">
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+          <label style="color: red;">NOTA: Se actualizará Supervisor y Tripulación a todos los programas que están en pantalla</label>
+        </div>
+        <div class="col-6 col-sm-6 col-md-3 col-lg-2 col-xl-2 mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-0">
+          <button class="btn btn-success w-100">
+            <span class="fas fa-save"></span> Actualizar
+          </button>
+        </div>
+        <div class="col-6 col-sm-6 col-md-3 col-lg-2 col-xl-2 mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-0">
+          <button class="btn btn-danger w-100">
+            <span class="fas fa-times"></span> Cancelar
+          </button>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="row mt-2">
+      <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Programas</legend>
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <div class="form-check form-check-inline">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <input class="form-check-input" type="checkbox" id="chkAllPrograms">
+                      <label class="form-check-label" for="chkAllPrograms"> Todos</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <grid-cs #grid1
+                [columnDefs]="columnasGridProgramas"
+                [(data)]="datosGridProgramas"
+                [rowsPerPage]="5"
+                [headerHeight]="38"
+                [rowHeight]="38"
+                [enablePagination]="true">
+              </grid-cs>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-10 mt-2">
+        <!-- Cargar aquí los distintos componentes (módulos) -->
+        <fieldset class="scheduler-border-padre">
+          <app-modulo3></app-modulo3>
+        </fieldset>
+      </div>
+    </div>
+
+  </div>
+</div>

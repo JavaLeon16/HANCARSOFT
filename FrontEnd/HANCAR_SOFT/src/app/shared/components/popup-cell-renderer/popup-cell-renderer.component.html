@@ -1,0 +1,16 @@
+<div *ngIf="Activar2B" class="btn-group">
+  <button type="button" class={{class}} [innerHtml]="label + dato" (click)="onClick($event)" [disabled]="disabled"></button>
+  <div class="btn-group" ngbDropdown role="group">
+    <button #trigger [ngClass]="[class, 'dropdown-toggle-split']" ngbDropdownToggle aria-controls="dropdown-basic" (click)="togglePopup()"></button>
+  </div>
+</div>
+
+<div *ngIf="Activar1B" class="btn-group">
+  <div class="btn-group" ngbDropdown role="group">
+  <button #trigger [innerHtml]="label + dato" [ngClass]="[class, 'dropdown-toggle-split']" ngbDropdownToggle aria-controls="dropdown-basic" (click)="togglePopup()"></button>
+</div>
+</div>
+
+<div #content *ngIf="isOpen" class="menu-container">
+  <div (click)="onClickOpciones($event,item.onclick)" class="menu-item" *ngFor="let item of value">{{item.tex}}</div>
+</div>

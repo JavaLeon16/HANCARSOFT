@@ -1,0 +1,247 @@
+<div class="contenedor">
+  <div class="cabecera">
+    <label style="margin-left: 20px; margin-top: 10px;">Módulo 1</label>
+  </div>
+
+  <div class="container-fluid">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Captura Producción</legend>
+
+      <div class="row mt-1">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Programa">
+            <div class="input-group-append">
+              <button class="btn btn-info" type="button">
+                <span class="fas fa-search"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="txtHoraInicio">Hora Inicio:</label>
+            </div>
+            <input id="txtHoraInicio" type="text" class="form-control" placeholder="00:00">
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-0">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="txtHoraFin">Hora Fin:</label>
+            </div>
+            <input id="txtHoraFin" type="text" class="form-control" placeholder="00:00">
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-0">
+          <div class="form-check form-check-inline w-100">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input class="form-check-input" type="checkbox" id="chkModTurno">
+                  <label class="form-check-label" for="chkModTurno">Mod. Turno</label>
+                </div>
+              </div>
+              <select class="custom-select">
+                <option value="1">Turno 1</option>
+                <option value="2">Turno 2</option>
+                <option value="3">Turno 3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="txtFecha">Fecha:</label>
+            </div>
+            <input id="txtFecha" type="date" class="form-control" [(ngModel)]="camposGenerales.pFecha">
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="cbxSupervisor">Supervisor:</label>
+            </div>
+            <select id="cbxSupervisor" class="custom-select">
+              <option value="1">Supervisor 1</option>
+              <option value="2">Supervisor 2</option>
+              <option value="3">Supervisor 3</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="cbxTripulacion">Tripulación:</label>
+            </div>
+            <select id="cbxTripulacion" class="custom-select">
+              <option value="1">Tripulación 1</option>
+              <option value="2">Tripulación 2</option>
+              <option value="3">Tripulación 3</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-6 col-sm-4 col-md-2 col-lg-2 col-xl-2 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+          <label class="input-group-text justify-content-center">OP</label>
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+        </div>
+        <div class="col-6 col-sm-4 col-md-2 col-lg-2 col-xl-2 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+          <label class="input-group-text justify-content-center">Artículo</label>
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+        </div>
+        <div class="col-6 col-sm-4 col-md-2 col-lg-2 col-xl-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+          <label class="input-group-text justify-content-center">H. Buenas</label>
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+        </div>
+        <div class="col-6 col-sm-4 col-md-2 col-lg-2 col-xl-2 mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-0">
+          <label class="input-group-text justify-content-center">H. Malas</label>
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+        </div>
+        <div class="col-6 col-sm-4 col-md-2 col-lg-2 col-xl-2 mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-0">
+          <label class="input-group-text justify-content-center">Cortes</label>
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+        </div>
+        <div class="col-6 col-sm-4 col-md-2 col-lg-2 col-xl-2 mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-0">
+          <label class="input-group-text justify-content-center">M2 Reales</label>
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+          <input type="text" class="form-control mt-1">
+        </div>
+      </div>
+
+    </fieldset>
+
+    <div class="row mt-2">
+      <div class="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6">
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Desperdicio</legend>
+          <div class="input-group mt-1">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="txtOP">OP:</label>
+            </div>
+            <input id="txtOP" type="text" class="form-control">
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <grid-cs #grid1
+                [columnDefs]="columnasGrid1"
+                [(data)]="datosGrid1"
+                [rowsPerPage]="5"
+                [enablePagination]="true">
+              </grid-cs>
+            </div>
+          </div>
+
+          <input type="text" hidden>
+        </fieldset>
+      </div>
+
+      <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Estadistica</legend>
+          <div class="input-group mt-1">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="txtMetrosL">Metros lineales:</label>
+            </div>
+            <input id="txtMetrosL" type="text" class="form-control">
+          </div>
+        </fieldset>
+
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Datos Calculados</legend>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
+              <div class="input-group mt-1">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="txtM2Brutos">M2 Brutos:</label>
+                </div>
+                <input id="txtM2Brutos" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
+              <div class="input-group mt-1">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="txtM2Netos">M2 Netos:</label>
+                </div>
+                <input id="txtM2Netos" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
+              <div class="input-group mt-1">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="txtKgPapel">Kg. Papel:</label>
+                </div>
+                <input id="txtKgPapel" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
+              <div class="input-group mt-1">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="txtHrProd">Hr. Producc:</label>
+                </div>
+                <input id="txtHrProd" type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col-12 col-sm-12 col-md-3 col-lg-2 col-xl-2 text-center mb-2">
+        <input type="text" hidden>
+        <input type="text" hidden>
+        <input type="text" hidden>
+        <div class="row">
+          <div class="col-12 col-sm-4 col-md-12 col-lg-12 col-xl-12 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+            <button class="btn btn-primary w-100">
+              <span class="fas fa-calculator"></span> Calcula
+            </button>
+          </div>
+          <div class="col-12 col-sm-4 col-md-12 col-lg-12 col-xl-12 mt-2 mt-sm-0 mt-md-2 mt-lg-2 mt-xl-2">
+            <button class="btn btn-danger w-100">
+              <span class="fas fa-times"></span> Cancela
+            </button>
+          </div>
+          <div class="col-12 col-sm-4 col-md-12 col-lg-12 col-xl-12 mt-2 mt-sm-0 mt-md-2 mt-lg-2 mt-xl-2">
+            <button class="btn btn-success w-100">
+              <span class="fas fa-check"></span> Acepta
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- <div class="pie">
+    <div class="row ">
+      <div class="col-xs-12 col-md-12 text-center ">
+          <small>Modulo1 20230202</small>
+      </div>
+    </div>
+  </div> -->
+</div>

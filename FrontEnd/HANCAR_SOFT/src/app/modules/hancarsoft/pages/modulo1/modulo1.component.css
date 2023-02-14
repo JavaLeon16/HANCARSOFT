@@ -1,0 +1,85 @@
+.contenedor {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cabecera {
+  background: #f39c12;
+  flex: 0.01;
+  color: white;
+  background-color: #ffb240;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.contenido {
+  flex: 1;
+}
+
+.pie {
+  background: #f39c12;
+  flex: 0.01;
+  color: white;
+  background-color: #f39c12;
+  font-size: 12px;
+  font-weight: bold;
+  top: 100px;
+  bottom: 0px;
+}
+
+.pie h5 {
+  font-size: medium;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+/* Firefox */
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.vacios {
+  color: red;
+}
+
+.lbldatos{
+ margin-left: 2%;
+}
+
+.lol {
+  font-size: 34px;
+  color: #FFC300;
+}
+
+
+.conta{
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+}
+.cecso{
+  background: #f39c12;
+  color: #fff;
+
+}
+
+fieldset.scheduler-border {
+  border: 1px groove #ddd !important;
+  padding: 0 0.8em 0.8em 0.8em !important;
+  margin: 0 0 0.8em 0 !important;
+  -webkit-box-shadow:  0px 0px 0px 0px #000;
+          box-shadow:  0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+  font-size: 1em !important;
+  font-weight: bold !important;
+  text-align: left !important;
+}
