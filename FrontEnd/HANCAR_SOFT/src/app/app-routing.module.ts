@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthComponent } from './shared/components/auth/auth.component';
 import { AuthGuard } from './helpers/auth.guard';
 
+
+
 const routes: Routes = [
   {
     path: 'auth/:module/:component',
@@ -11,6 +13,16 @@ const routes: Routes = [
   {
     path: 'auth/:module',
     component: AuthComponent
+  },
+  {
+    path: 'progauto',
+    loadChildren: () => import('./modules/progauto/progauto.module').then((m) => m.ProgautoModule),
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'secimp',
+    loadChildren: () => import('./modules/secimp/secimp.module').then((m) => m.SecimpModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'hancarsoft',

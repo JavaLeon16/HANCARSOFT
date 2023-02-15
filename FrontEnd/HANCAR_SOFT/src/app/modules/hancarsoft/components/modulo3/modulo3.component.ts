@@ -5,8 +5,8 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import Swal from 'sweetalert2';
 
 import {
-  camposGenerales, datosBusquedaPrograma, datosBusquedaProduccion, datosTripulaciones,
-  fcaprog019mw
+  camposGenerales, datosBusquedaPrograma, datosBusquedaProduccion, cbxTripulaciones,
+  fcaprog019mw, datosPrograma, cbxSupervisor, cbxParafina, objGuardar
 } from '../../../../models/DTO/fcaprog019mw';
 import { Fcaprog019mwService } from '../../../../services/fcaprog019mw.service';
 
@@ -23,7 +23,10 @@ export class Modulo3Component implements OnInit {
   mdlValidaRef: NgbModalRef;
   columnasGridValidacion: any;
   datosGridValidacion: Array<datosBusquedaProduccion>;
-  datosTripulaciones: datosTripulaciones;
+  cbxTripulaciones: cbxTripulaciones;
+  cbxSupervisor: cbxSupervisor;
+  cbxParafina: cbxParafina;
+  objGuardar: objGuardar;
 
   constructor(
     private modalService: NgbModal,
@@ -89,27 +92,36 @@ export class Modulo3Component implements OnInit {
     ];
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.limpiarCampos();
+    await this.cargaCbxSupervisor();
+    await this.cargaCbxTipoParafina();
   }
 
-  limpiarCampos(): void {
+  limpiarCampos(limpiaPrograma: boolean = true, program: number = 0): void {
     this.camposGenerales = {
       wFechaAnterior: '',
-      idUnicoProduccion: '000000', programa: 0, turno: '',
+      idUnicoProduccion: '', programa: limpiaPrograma ? 0 : program, turno: '',
       fecha: this.pipe.transform(new Date(), 'yyyy-MM-dd'),
-      horaIni: '', horaFin: '',
+      horaIni: '', horaFin: '', disabledParafina: true, disabledBtnAcepta: true,
       claveMaquina: '', op: '', claveProceso: '', piezasCorte: 0, tipoMaquina: '', cantidad: 0,
       ultimoProceso: false, pegado: false, primerColor: '', segundoColor: '', tercerColor: '', cuartoColor: '',
-      areaUnitaria: 0, pesoUnitario: 0, claveArticulo: '', articulo: '', liberadoCostos: false
+      areaUnitaria: 0, pesoUnitario: 0, claveArticulo: '', articulo: '', liberadoCostos: false,
+      desperdicioImpresora: 0, desperdicioCorrugadora: 0, desperdicioLinea: 0, pesoLamina: 0, pesoCaja: 0, retrabajo: 0
     };
     this.datosGridValidacion = [];
-    this.datosTripulaciones = {
-      selected: '', datos: []
-    };
+    if (limpiaPrograma) { this.cbxTripulaciones = { selected: 0, datos: [] }; }
+    if (limpiaPrograma) { this.cbxSupervisor = { selected: '', datos: [] }; }
+    if (limpiaPrograma) { this.cbxParafina = { selected: 0, datos: [] }; }
+    this.objGuardar = {
+      fecha: '', horaIni: '', horaFin: '', turno: 0, supervisor: '', minutos: 0, despCorrguradora: 0,
+      despImpresora: 0, despAcabados: 0, fechaNow: '', parafina: '', pesoLamina: 0, pesoCaja: 0, retrabajo: 0,
+      actCantidad: 0, idTripulacion: 0, programa: 0, claveMaquina: '', wFechaAnterior: '', idUnico: 0
+    }
   }
 
   async btnBuscarPrograma(): Promise<void> {
+    this.limpiarCampos(false, this.camposGenerales.programa);
     if (this.camposGenerales.programa) {
       this.blockUI.start('Obteniendo programa');
       try {
@@ -146,6 +158,7 @@ export class Modulo3Component implements OnInit {
             );
           }
           else {
+            this.camposGenerales.disabledBtnAcepta = false;
             const objBuscaProduccion: any = await this.servicio.buscaProduccion(this.camposGenerales.programa);
             if (objBuscaProduccion.correcto && objBuscaProduccion.data.length > 0) {
               this.datosGridValidacion = objBuscaProduccion.data;
@@ -175,8 +188,8 @@ export class Modulo3Component implements OnInit {
     try {
       const res: any = await this.servicio.buscaTripulacionMaquina(row.claveMaquina);
       if (res.correcto && res.data.length > 0) {
-        this.datosTripulaciones.datos = res.data;
-        this.datosTripulaciones.selected = res.data[0].idTripulacion;
+        this.cbxTripulaciones.datos = res.data;
+        this.cbxTripulaciones.selected = Number(res.data[0].idTripulacion);
       }
       this.camposGenerales.claveMaquina = row.claveMaquina;
       this.camposGenerales.turno = row.turno;
@@ -185,12 +198,24 @@ export class Modulo3Component implements OnInit {
         this.camposGenerales.fecha = row.fecha;
         this.camposGenerales.wFechaAnterior = row.fecha;
       }
-      this.txtTurno_Change();
+      await this.txtTurno_Change();
+      await this.m3_txtMaquina_Change();
       this.blockUI.stop();
       this.mdlValidaRef.close();
     } catch (error) {
       this.blockUI.stop();
       Swal.fire('Error', error.error, 'error');
+    }
+  }
+
+  async m3_txtMaquina_Change(): Promise<void> {
+    await this.servicio.leeHoraLocal();
+    const maq = this.camposGenerales.claveMaquina.trim();
+    if (maq === 'PARAF' || maq === 'PARAF2') {
+      this.camposGenerales.disabledParafina = false;
+    }
+    else {
+      this.camposGenerales.disabledParafina = true;
     }
   }
 
@@ -209,7 +234,14 @@ export class Modulo3Component implements OnInit {
         this.camposGenerales.fecha = this.camposGenerales.wFechaAnterior;
       }
 
+      const res: any = await this.servicio.leePrograma(
+        this.camposGenerales.fecha, this.camposGenerales.programa, this.camposGenerales.claveMaquina, this.camposGenerales.turno
+      );
 
+      if (res.correcto && res.data.length > 0) {
+        await this.leeDatos(res.data);
+        this.camposGenerales.disabledBtnAcepta = false;
+      }
 
       this.blockUI.stop();
     } catch (error) {
@@ -218,16 +250,177 @@ export class Modulo3Component implements OnInit {
     }
   }
 
+  async leeDatos(data: Array<datosPrograma>): Promise<void> {
+    for (const row of data) {
+      this.camposGenerales.fecha = row.fecha ? row.fecha.trim() : this.camposGenerales.fecha.trim();
+      this.camposGenerales.horaIni = row.horaInicio ? row.horaInicio.trim() : this.camposGenerales.horaIni.trim();
+      this.camposGenerales.horaFin = row.horaTermino ? row.horaTermino.trim() : this.camposGenerales.horaFin.trim();
+      this.camposGenerales.desperdicioCorrugadora = row.laminaDespeg ? row.laminaDespeg : this.camposGenerales.desperdicioCorrugadora;
+      this.camposGenerales.desperdicioImpresora = row.laminaImpres ? row.laminaImpres : this.camposGenerales.desperdicioImpresora;
+      this.camposGenerales.desperdicioLinea = row.desperdicioAcabados ? row.desperdicioAcabados : this.camposGenerales.desperdicioLinea;
+      this.camposGenerales.cantidad = row.cantidad ? row.cantidad : this.camposGenerales.cantidad;
+      // Pendiente PickUp
+      this.camposGenerales.pesoLamina = row.pesoLamina ? row.pesoLamina : this.camposGenerales.pesoLamina;
+      this.camposGenerales.pesoCaja = row.pesoCaja ? row.pesoCaja : this.camposGenerales.pesoCaja;
+      this.camposGenerales.retrabajo = row.retrabajo ? row.retrabajo : this.camposGenerales.retrabajo;
+      this.cbxSupervisor.selected = row.supervisor ? row.supervisor.trim() : this.cbxSupervisor.selected.trim();
+      var tmpSup = this.cbxSupervisor.selected;
+      for (const row of this.cbxSupervisor.datos) {
+        if (row.idSupervisor.trim() === tmpSup) {
+          this.cbxSupervisor.selected = tmpSup;
+          break;
+        }
+        else {
+          this.cbxSupervisor.selected = '';
+        }
+      }
+      this.cbxTripulaciones.selected = row.idTripulacion ? row.idTripulacion : this.cbxTripulaciones.selected;
+      var tmpTrip = this.cbxTripulaciones.selected;
+      for (const row of this.cbxTripulaciones.datos) {
+        if (row.idTripulacion === tmpTrip) {
+          this.cbxTripulaciones.selected = tmpTrip;
+          break;
+        }
+        else {
+          this.cbxTripulaciones.selected = 0;
+        }
+      }
+    }
+  }
+
+  async cargaCbxSupervisor(): Promise<void> {
+    const res: any = await this.servicio.buscaSupervisor();
+    this.cbxSupervisor = { selected: '', datos: [] };
+    if (res.correcto && res.data.length > 0) {
+      this.cbxSupervisor.datos = res.data;
+    }
+  }
+
+  async cargaCbxTipoParafina(): Promise<void> {
+    const res: any = await this.servicio.buscaParafina();
+    this.cbxParafina = { selected: 0, datos: [] };
+    if (res.correcto && res.data.length > 0) {
+      this.cbxParafina.datos = res.data;
+      this.cbxParafina.selected = res.data[0].idParafina;
+    }
+  }
+
   async iniciaProduccion(): Promise<void> {
-    const res: any = await this.servicio.iniciaProduccion();
+    const res: any = await this.servicio.leeHoraLocal();
     if (res.correcto && res.data.length > 0) {
       const data: Array<fcaprog019mw> = res.data;
       for (const iterator of data) {
-        this.camposGenerales.fecha = iterator.fecha.substring(0, 10);
-        this.camposGenerales.horaIni = iterator.fecha.substring(11, 16);
-        this.camposGenerales.horaFin = iterator.fecha.substring(11, 16);
+        this.camposGenerales.fecha = iterator.fecha.substring(0, 10).trim();
+        this.camposGenerales.horaIni = iterator.fecha.substring(11, 16).trim();
+        this.camposGenerales.horaFin = iterator.fecha.substring(11, 16).trim();
       }
     }
+    this.camposGenerales.desperdicioImpresora = 0;
+    this.camposGenerales.desperdicioCorrugadora = 0;
+    this.camposGenerales.desperdicioLinea = 0;
+  }
+
+  async validaDatos(): Promise<boolean> {
+    var pValidaDatos: boolean = true;
+    if (!this.camposGenerales.programa) {
+      this.mensajeFlotante('Seleccione un Programa', 1, 3000);
+      pValidaDatos = false;
+    }
+    if (!this.cbxSupervisor.selected) {
+      this.mensajeFlotante('Seleccione un Supervisor', 1, 3000);
+      pValidaDatos = false;
+    }
+    if (!this.camposGenerales.turno) {
+      this.mensajeFlotante('Seleccione un Turno', 1, 3000);
+      pValidaDatos = false;
+    }
+    if (!this.cbxSupervisor.selected) {
+      this.mensajeFlotante('Seleccione una Tripulación', 1, 3000);
+      pValidaDatos = false;
+    }
+    if (!this.camposGenerales.idUnicoProduccion) {
+      this.mensajeFlotante('No se identificó el Id del Registro', 1, 3000);
+      pValidaDatos = false;
+    }
+
+    if (pValidaDatos) {
+      if (this.camposGenerales.wFechaAnterior !== this.camposGenerales.fecha) {
+        const res: any = await this.servicio.validarGuardado(
+          this.camposGenerales.programa, this.camposGenerales.claveMaquina, this.camposGenerales.turno, this.camposGenerales.fecha
+        );
+        if (res.correcto && res.data.length > 0) {
+          pValidaDatos = false;
+          Swal.fire({
+            title: 'Información',
+            html: 'Ya existe Registro de Producción el Turno ' + this.camposGenerales.turno + '<br>' +
+              'Del día ' + this.camposGenerales.fecha,
+            icon: 'info'
+          });
+        }
+      }
+    }
+    return pValidaDatos;
+  }
+
+  async btnAcepta(): Promise<void> {
+    if (await this.validaDatos()) {
+      const res: any = await this.servicio.leeHoraLocal();
+      var fechaNow = '', lMinutos = 0, lParafina = 0, lActCantidad = 0;
+      if (res.correcto && res.data.length > 0) {
+        fechaNow = res.data[0].fecha;
+      }
+      lMinutos = await this.dateDiff(this.camposGenerales.horaIni, this.camposGenerales.horaFin);
+
+      if (lMinutos < 0) {
+        lMinutos = 1440 - lMinutos;
+      }
+
+      if (!this.camposGenerales.desperdicioCorrugadora) { this.camposGenerales.desperdicioCorrugadora = 0; }
+      if (!this.camposGenerales.desperdicioImpresora) { this.camposGenerales.desperdicioImpresora = 0; }
+      if (!this.camposGenerales.desperdicioLinea) { this.camposGenerales.desperdicioLinea = 0; }
+      if (!this.camposGenerales.pesoLamina) { this.camposGenerales.pesoLamina = 0; }
+      if (!this.camposGenerales.pesoCaja) { this.camposGenerales.pesoCaja = 0; }
+      if (!this.camposGenerales.retrabajo) { this.camposGenerales.retrabajo = 0; }
+      lParafina = !this.camposGenerales.disabledParafina ? this.cbxParafina.selected : 0;
+      lActCantidad = !this.camposGenerales.ultimoProceso ? this.camposGenerales.cantidad : 0;
+
+      this.objGuardar = {
+        fecha: this.camposGenerales.fecha, horaIni: this.camposGenerales.horaIni, horaFin: this.camposGenerales.horaFin,
+        turno: Number(this.camposGenerales.turno), supervisor: this.cbxSupervisor.selected, minutos: lMinutos,
+        despCorrguradora: this.camposGenerales.desperdicioCorrugadora, despImpresora: this.camposGenerales.desperdicioImpresora,
+        despAcabados: this.camposGenerales.desperdicioLinea, fechaNow: fechaNow, parafina: lParafina.toString(),
+        pesoLamina: this.camposGenerales.pesoLamina, pesoCaja: this.camposGenerales.pesoCaja, retrabajo: this.camposGenerales.retrabajo,
+        actCantidad: lActCantidad, idTripulacion: this.cbxTripulaciones.selected,
+        programa: this.camposGenerales.programa, claveMaquina: this.camposGenerales.claveMaquina,
+        wFechaAnterior: this.camposGenerales.wFechaAnterior, idUnico: Number(this.camposGenerales.idUnicoProduccion)
+      }
+
+      try {
+        const result: any = await this.servicio.guardar(this.objGuardar);
+        if (result.correcto) {
+          this.mensajeFlotante('Datos Actualizados...');
+        }
+      } catch (error) {
+        Swal.fire({
+          title: 'Error',
+          html: 'Se presento un problema, favor de reportarlo a mesa de servicio.<br>' + error.error,
+          icon: 'error'
+        });
+      }
+    }
+  }
+
+  async dateDiff(horaI: string, horaF: string): Promise<number> {
+    var hi = '', hf = '';
+    var mHi = 0, mHf = 0, difMin = 0;
+    if (horaI > horaF) { hi = horaF; hf = horaI; }
+    else { hi = horaI; hf = horaF; }
+
+    mHi = (Number(hi.substring(0, 1)) * 60) + Number(hi.substring(3, 4));
+    mHf = (Number(hf.substring(0, 1)) * 60) + Number(hf.substring(3, 4));
+    difMin = mHf - mHi;
+
+    return difMin;
   }
 
   mensajeFlotante(mensaje: string, icono: number = 0, tiempo: number = 2700): void {

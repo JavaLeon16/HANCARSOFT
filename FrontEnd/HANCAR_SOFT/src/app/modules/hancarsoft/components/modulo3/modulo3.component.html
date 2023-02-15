@@ -19,7 +19,11 @@
             <div class="input-group-prepend">
               <label class="input-group-text" for="m3_txtMaquina">Máquina:</label>
             </div>
-            <input id="m3_txtMaquina" type="text" class="form-control" [(ngModel)]="camposGenerales.claveMaquina" [title]="camposGenerales.claveMaquina" disabled>
+            <input id="m3_txtMaquina" type="text" class="form-control"
+              [(ngModel)]="camposGenerales.claveMaquina"
+              [title]="camposGenerales.claveMaquina"
+              (change)="m3_txtMaquina_Change()"
+              disabled>
             <!-- <select id="m3_cbxMaquina" class="custom-select">
               <option value="1">Máquina 1</option>
               <option value="2">Máquina 2</option>
@@ -70,10 +74,10 @@
             <div class="input-group-prepend">
               <label class="input-group-text" for="m3_cbxSupervisor">Supervisor:</label>
             </div>
-            <select id="m3_cbxSupervisor" class="custom-select">
-              <option value="1">Supervisor 1</option>
-              <option value="2">Supervisor 2</option>
-              <option value="3">Supervisor 3</option>
+            <select id="m3_cbxSupervisor" class="custom-select" [(ngModel)]="cbxSupervisor.selected">
+              <option *ngFor="let dato of cbxSupervisor.datos" value="{{dato.idSupervisor}}">
+                {{dato.supervisor}}
+              </option>
             </select>
           </div>
         </div>
@@ -82,8 +86,8 @@
             <div class="input-group-prepend">
               <label class="input-group-text" for="m3_cbxTripulacion">Tripulación:</label>
             </div>
-            <select id="m3_cbxTripulacion" class="custom-select" [(ngModel)]="datosTripulaciones.selected">
-              <option *ngFor="let dato of datosTripulaciones.datos" value="{{dato.idTripulacion}}">
+            <select id="m3_cbxTripulacion" class="custom-select" [(ngModel)]="cbxTripulaciones.selected">
+              <option *ngFor="let dato of cbxTripulaciones.datos" value="{{dato.idTripulacion}}">
                 {{dato.tripulacion}}
               </option>
             </select>
@@ -177,7 +181,10 @@
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="m3_txtCantidad">Cantidad:</label>
                   </div>
-                  <input id="m3_txtCantidad" type="text" class="form-control" [(ngModel)]="camposGenerales.cantidad" [title]="camposGenerales.cantidad" [disabled]="camposGenerales.ultimoProceso">
+                  <input id="m3_txtCantidad" type="text" class="form-control"
+                    [(ngModel)]="camposGenerales.cantidad"
+                    [title]="camposGenerales.cantidad"
+                    [disabled]="camposGenerales.ultimoProceso">
                 </div>
               </div>
             </div>
@@ -191,35 +198,35 @@
         <fieldset class="scheduler-border">
           <legend class="scheduler-border">Desperdicio</legend>
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-12 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-6 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="m3_txtImpresora">Impresora:</label>
                 </div>
-                <input id="m3_txtImpresora" type="text" class="form-control">
+                <input id="m3_txtImpresora" type="number" class="form-control" [(ngModel)]="camposGenerales.desperdicioImpresora">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-12 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="m3_txtCorrugadora">Corrugadora:</label>
                 </div>
-                <input id="m3_txtCorrugadora" type="text" class="form-control">
+                <input id="m3_txtCorrugadora" type="number" class="form-control" [(ngModel)]="camposGenerales.desperdicioCorrugadora">
               </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-12 mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-2">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="m3_txtLinea">Línea:</label>
                 </div>
-                <input id="m3_txtLinea" type="text" class="form-control">
+                <input id="m3_txtLinea" type="number" class="form-control" [(ngModel)]="camposGenerales.desperdicioLinea">
               </div>
             </div>
           </div>
         </fieldset>
       </div>
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
-        <fieldset class="scheduler-border">
+        <fieldset class="scheduler-border" [disabled]="camposGenerales.disabledParafina">
           <legend class="scheduler-border">Parafinadora</legend>
           <div class="row">
             <div class="col-12 col-sm-5 col-md-5 col-lg-6 col-xl-12">
@@ -235,10 +242,10 @@
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="m3_cbxTipoParafina">Tipo Parafina:</label>
                 </div>
-                <select id="m3_cbxTipoParafina" class="custom-select">
-                  <option value="1">Parafina 1</option>
-                  <option value="2">Parafina 2</option>
-                  <option value="3">Parafina 3</option>
+                <select id="m3_cbxTipoParafina" class="custom-select" [(ngModel)]="cbxParafina.selected">
+                  <option *ngFor="let dato of cbxParafina.datos" value="{{dato.idParafina}}">
+                    {{dato.parafina}}
+                  </option>
                 </select>
               </div>
             </div>
@@ -248,28 +255,28 @@
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
         <fieldset class="scheduler-border">
           <div class="row mt-2">
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-12 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-12 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="m3_txtPesoLamina">Peso Lámina:</label>
                 </div>
-                <input id="m3_txtPesoLamina" type="text" class="form-control">
+                <input id="m3_txtPesoLamina" type="number" class="form-control" [(ngModel)]="camposGenerales.pesoLamina">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-12 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-12 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-2">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="m3_txtPesoCaja">Peso Caja:</label>
                 </div>
-                <input id="m3_txtPesoCaja" type="text" class="form-control">
+                <input id="m3_txtPesoCaja" type="number" class="form-control" [(ngModel)]="camposGenerales.pesoCaja">
               </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-12 mt-2 mt-sm-2 mt-md-0 mt-lg-0 mt-xl-2">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="m3_txtRetrabajo">Retrabajo:</label>
                 </div>
-                <input id="m3_txtRetrabajo" type="text" class="form-control">
+                <input id="m3_txtRetrabajo" type="number" class="form-control" [(ngModel)]="camposGenerales.retrabajo">
               </div>
             </div>
           </div>
@@ -277,19 +284,19 @@
       </div>
     </div>
 
-    <div class="row mt-2">
+    <div class="row mt-2 mb-2">
       <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
         <label>IdUnicoProducción: {{camposGenerales.idUnicoProduccion}}</label>
       </div>
       <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
         <div class="row justify-content-end">
           <div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-3">
-            <button class="btn btn-success w-100">
+            <button class="btn btn-success w-100" [disabled]="camposGenerales.disabledBtnAcepta" (click)="btnAcepta()">
               <span class="fas fa-check"></span> Acepta
             </button>
           </div>
           <div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-3">
-            <button class="btn btn-danger w-100">
+            <button class="btn btn-danger w-100" (click)="limpiarCampos()">
               <span class="fas fa-times"></span> Cancela
             </button>
           </div>
@@ -341,7 +348,7 @@
             <span class="fas fa-check"></span>
             Aceptar
           </button> -->
-          <button type="button" class="btn btn-secondary ml-2" (click)="modal.dismiss()">
+          <button type="button" class="btn btn-secondary ml-2" (click)="modal.dismiss(); limpiarCampos();">
             <span class="fas fa-undo"></span>
             Regresar
           </button>
