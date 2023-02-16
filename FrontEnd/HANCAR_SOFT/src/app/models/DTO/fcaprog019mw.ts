@@ -155,6 +155,13 @@ export class cbxParafina {
   selected: number;
   datos: Array<comboParafina>;
 }
+export class comboMaquinas {
+  claveMaquina: string;
+}
+export class cbxMaquinas {
+  selected: string;
+  datos: Array<comboMaquinas>;
+}
 
 export class objGuardar {
   fecha: string;
@@ -177,4 +184,22 @@ export class objGuardar {
   claveMaquina: string;
   wFechaAnterior: string;
   idUnico: number;
+}
+
+export class camposGeneralesL {
+  pFechaDel: string;
+  pFechaAl: string;
+  pFechaProduccion: string;
+  pSeleccionarTodos: boolean;
+  pTurno: string;
+  pSinFechaProd: boolean;
+}
+export class listProgramasL {
+  sel: boolean;
+  programa: number;
+  maquina: string;
+  turno: string;
+  op: string;
+  idUnico: number;
+  fecha: string;
 }

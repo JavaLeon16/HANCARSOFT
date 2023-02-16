@@ -8,6 +8,8 @@ ALTER PROCEDURE FCAPROG019MWSPC1
 	, @wFechaAnterior VARCHAR(10)	= NULL
 	, @Turno INT					= NULL
 	, @Fecha VARCHAR(10)			= NULL
+	, @FechaF VARCHAR(10)			= NULL
+	, @SinFechaProd BIT				= NULL
 
 	, @UsuarioERP VARCHAR(6)		= NULL
 	, @ZonaERP VARCHAR(2)			= NULL
@@ -89,5 +91,36 @@ AS BEGIN
 		FROM CmoDat021 
 		WHERE Programa = @Programa AND [Clave Maquina] = @ClaveMaquina
 			AND Turno = @Turno AND Fecha = @Fecha
+	END
+	-- CATALOGO DE MAQUINAS
+	ELSE IF @Opcion = 9
+	BEGIN
+		SELECT DISTINCT RTRIM ([Clave Maquina]) AS ClaveMaquina
+        FROM CmoCat011
+        WHERE Status = 0 AND [Tipo Maquina] IN ('AC', 'ES')
+	END
+	-- CARGA PROGRAMAS DE PAGINA L
+	ELSE IF @Opcion = 10
+	BEGIN
+		IF ISNULL(@SinFechaProd, 0) = 1
+		BEGIN
+			SELECT A.Programa, A.[Clave Maquina] AS ClaveMaquina, A.Turno, A.OP, A.IdUnico, FORMAT(A.Fecha, 'yyyy-MM-dd') AS Fecha
+			FROM CmoDat020 B
+			JOIN CmoDat021 A on A.Programa = B.Programa
+			JOIN CmoDat011 C on A.OP = C.OP
+			WHERE B.[Fecha Programa] BETWEEN ISNULL(@Fecha, '') AND ISNULL(@FechaF, '') AND Turno = @Turno
+				AND B.[Tipo Maquina] <> 'IM' AND C.[Liberado Costos] = 0 AND A.[Clave Maquina] = @ClaveMaquina
+				AND A.Fecha IS NULL
+			ORDER BY A.Fecha, A.Programa DESC
+		END ELSE
+		BEGIN
+			SELECT A.Programa, A.[Clave Maquina] AS ClaveMaquina, A.Turno, A.OP, A.IdUnico, FORMAT(A.Fecha, 'yyyy-MM-dd') AS Fecha
+			FROM CmoDat020 B
+			JOIN CmoDat021 A on A.Programa = B.Programa
+			JOIN CmoDat011 C on A.OP = C.OP
+			WHERE B.[Fecha Programa] BETWEEN ISNULL(@Fecha, '') AND ISNULL(@FechaF, '') AND Turno = @Turno
+				AND B.[Tipo Maquina] <> 'IM' AND C.[Liberado Costos] = 0 AND A.[Clave Maquina] = @ClaveMaquina
+			ORDER BY A.Fecha, A.Programa DESC
+		END
 	END
 END

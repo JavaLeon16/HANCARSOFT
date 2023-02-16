@@ -88,4 +88,21 @@ export class Fcaprog019mwService {
       .append('idUnico', obj.idUnico.toString())
     return await this.http.get(url, {params}).toPromise();
   }
+
+  // METODOS DE PAGINA L
+  async cargaComboMaquinas(): Promise<object> {
+    const url = URL_PROGRAMACION + 'cargaComboMaquinas';
+    // const params = new HttpParams()
+    return await this.http.get(url/*, {params}*/).toPromise();
+  }
+  async buscaProgramas(fecha: string, fechaF: string, turno: string, claveMaquina: string, sinFechaProd: boolean): Promise<object> {
+    const url = URL_PROGRAMACION + 'buscaProgramas';
+    const params = new HttpParams()
+      .append('fecha', fecha)
+      .append('fechaF', fechaF)
+      .append('turno', turno)
+      .append('claveMaquina', claveMaquina)
+      .append('sinFechaProd', sinFechaProd ? '1' : '0');
+    return await this.http.get(url, {params}).toPromise();
+  }
 }

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import Swal from 'sweetalert2';
@@ -9,6 +9,7 @@ import {
   fcaprog019mw, datosPrograma, cbxSupervisor, cbxParafina, objGuardar
 } from '../../../../models/DTO/fcaprog019mw';
 import { Fcaprog019mwService } from '../../../../services/fcaprog019mw.service';
+import { ActualizacionVariableService } from '../../../../services/actualizacion-variable.service';
 
 @Component({
   selector: 'app-modulo3',
@@ -16,6 +17,10 @@ import { Fcaprog019mwService } from '../../../../services/fcaprog019mw.service';
   styleUrls: ['./modulo3.component.css']
 })
 export class Modulo3Component implements OnInit {
+  @Input() abiertoDesdeModuloL: boolean = false;
+  @Input() visibleTituloModulo: boolean = true;
+  // @Input() programa: number = 0;
+  tituloModulo: string = 'Captura Estadistica Acab/Esp';
   @BlockUI() blockUI: NgBlockUI;
   camposGenerales: camposGenerales;
 
@@ -31,7 +36,8 @@ export class Modulo3Component implements OnInit {
   constructor(
     private modalService: NgbModal,
     public pipe: DatePipe,
-    public servicio: Fcaprog019mwService
+    public servicio: Fcaprog019mwService,
+    private servicioActVariable: ActualizacionVariableService
   ) {
     this.columnasGridValidacion = [
       {
@@ -96,6 +102,13 @@ export class Modulo3Component implements OnInit {
     this.limpiarCampos();
     await this.cargaCbxSupervisor();
     await this.cargaCbxTipoParafina();
+    if (this.abiertoDesdeModuloL) {
+      this.servicioActVariable.pPrograma$.subscribe(async data => {
+        this.camposGenerales.programa = data;
+        await this.txtPrograma_change();
+        console.log(`El valor de la variable cambio a: ${data}`);
+      });
+    }
   }
 
   limpiarCampos(limpiaPrograma: boolean = true, program: number = 0): void {
@@ -103,7 +116,7 @@ export class Modulo3Component implements OnInit {
       wFechaAnterior: '',
       idUnicoProduccion: '', programa: limpiaPrograma ? 0 : program, turno: '',
       fecha: this.pipe.transform(new Date(), 'yyyy-MM-dd'),
-      horaIni: '', horaFin: '', disabledParafina: true, disabledBtnAcepta: true,
+      horaIni: '00:00', horaFin: '00:00', disabledParafina: true, disabledBtnAcepta: true,
       claveMaquina: '', op: '', claveProceso: '', piezasCorte: 0, tipoMaquina: '', cantidad: 0,
       ultimoProceso: false, pegado: false, primerColor: '', segundoColor: '', tercerColor: '', cuartoColor: '',
       areaUnitaria: 0, pesoUnitario: 0, claveArticulo: '', articulo: '', liberadoCostos: false,
@@ -117,6 +130,12 @@ export class Modulo3Component implements OnInit {
       fecha: '', horaIni: '', horaFin: '', turno: 0, supervisor: '', minutos: 0, despCorrguradora: 0,
       despImpresora: 0, despAcabados: 0, fechaNow: '', parafina: '', pesoLamina: 0, pesoCaja: 0, retrabajo: 0,
       actCantidad: 0, idTripulacion: 0, programa: 0, claveMaquina: '', wFechaAnterior: '', idUnico: 0
+    }
+  }
+
+  async txtPrograma_change(): Promise<void> {
+    if (this.abiertoDesdeModuloL) {
+      await this.btnBuscarPrograma();
     }
   }
 
@@ -398,7 +417,7 @@ export class Modulo3Component implements OnInit {
       try {
         const result: any = await this.servicio.guardar(this.objGuardar);
         if (result.correcto) {
-          this.mensajeFlotante('Datos Actualizados...');
+          this.mensajeFlotante('Datos Actualizados...', 3800);
         }
       } catch (error) {
         Swal.fire({
@@ -416,14 +435,25 @@ export class Modulo3Component implements OnInit {
     if (horaI > horaF) { hi = horaF; hf = horaI; }
     else { hi = horaI; hf = horaF; }
 
-    mHi = (Number(hi.substring(0, 1)) * 60) + Number(hi.substring(3, 4));
-    mHf = (Number(hf.substring(0, 1)) * 60) + Number(hf.substring(3, 4));
+    mHi = (Number(hi.substring(0, 2)) * 60) + Number(hi.substring(3, 5));
+    mHf = (Number(hf.substring(0, 2)) * 60) + Number(hf.substring(3, 5));
     difMin = mHf - mHi;
 
     return difMin;
   }
 
-  mensajeFlotante(mensaje: string, icono: number = 0, tiempo: number = 2700): void {
+  async m3_txtHora_change(): Promise<void> {
+    var lMin = 0;
+    lMin = await this.dateDiff(this.camposGenerales.horaIni, this.camposGenerales.horaFin);
+    if (lMin < 0) {
+      lMin = 1440 - lMin;
+    }
+    if (lMin > 450) {
+      Swal.fire('Información', 'Tiempo calculado ' + lMin.toString() + " minutos... Por favor, verifique", 'info');
+    }
+  }
+
+  mensajeFlotante(mensaje: string, tiempo: number = 2700, icono: number = 0): void {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-end',

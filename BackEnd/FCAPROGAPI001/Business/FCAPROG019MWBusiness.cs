@@ -53,5 +53,15 @@ namespace Business
                 actCantidad, idTripulacion, programa, claveMaquina, wFechaAnterior, idUnico
             );
         }
+
+        // METODOS DE PAGINA L
+        public Task<Result> cargaComboMaquinas(TokenData DatosToken)
+        {
+            return new FCAPROG019MWData().cargaComboMaquinas(DatosToken);
+        }
+        public Task<Result> buscaProgramas(TokenData DatosToken, string fecha, string fechaF, string turno, string claveMaquina, string sinFechaProd)
+        {
+            return new FCAPROG019MWData().buscaProgramas(DatosToken, fecha, fechaF, turno, claveMaquina, sinFechaProd);
+        }
     }
 }

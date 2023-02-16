@@ -1,14 +1,18 @@
 <div class="contenedor">
+  <div class="cabecera" *ngIf="visibleTituloModulo">
+    <label style="margin-left: 20px; margin-top: 10px;">{{tituloModulo}}</label>
+  </div>
+
   <div class="container-fluid px-2">
 
-    <fieldset class="scheduler-border-hijo">
+    <fieldset class="scheduler-border-hijo" [disabled]="abiertoDesdeModuloL">
       <legend class="scheduler-border-hijo">Captura Producción</legend>
       <div class="row">
         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
           <div class="input-group">
-            <input type="number" class="form-control" placeholder="Programa" [(ngModel)]="camposGenerales.programa">
+            <input type="number" class="form-control" placeholder="Programa" [(ngModel)]="camposGenerales.programa" (change)="txtPrograma_change()">
             <div class="input-group-append">
-              <button class="btn btn-info" type="button" (click)="btnBuscarPrograma()">
+              <button class="btn btn-info" type="button" (click)="btnBuscarPrograma()" *ngIf="!abiertoDesdeModuloL">
                 <span class="fas fa-search"></span>
               </button>
             </div>
@@ -58,7 +62,8 @@
             <div class="input-group-prepend">
               <label class="input-group-text" for="m3_txtHoraInicio">Hora Inicio:</label>
             </div>
-            <input id="m3_txtHoraInicio" type="text" class="form-control" placeholder="00:00" [(ngModel)]="camposGenerales.horaIni">
+            <input id="m3_txtHoraInicio" type="time" class="form-control"
+              placeholder="00:00" [(ngModel)]="camposGenerales.horaIni" (change)="m3_txtHora_change()">
           </div>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
@@ -66,7 +71,8 @@
             <div class="input-group-prepend">
               <label class="input-group-text" for="m3_txtHoraFin">Hora Fin:</label>
             </div>
-            <input id="m3_txtHoraFin" type="text" class="form-control" placeholder="00:00" [(ngModel)]="camposGenerales.horaFin">
+            <input id="m3_txtHoraFin" type="time" class="form-control"
+              placeholder="00:00" [(ngModel)]="camposGenerales.horaFin" (change)="m3_txtHora_change()">
           </div>
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2">
@@ -195,10 +201,10 @@
 
     <div class="row mt-2">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
-        <fieldset class="scheduler-border">
+        <fieldset class="scheduler-border" [disabled]="abiertoDesdeModuloL">
           <legend class="scheduler-border">Desperdicio</legend>
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-6 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-12 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="m3_txtImpresora">Impresora:</label>
@@ -206,7 +212,7 @@
                 <input id="m3_txtImpresora" type="number" class="form-control" [(ngModel)]="camposGenerales.desperdicioImpresora">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-12 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-2">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="m3_txtCorrugadora">Corrugadora:</label>
@@ -226,7 +232,7 @@
         </fieldset>
       </div>
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
-        <fieldset class="scheduler-border" [disabled]="camposGenerales.disabledParafina">
+        <fieldset class="scheduler-border" [disabled]="camposGenerales.disabledParafina || abiertoDesdeModuloL">
           <legend class="scheduler-border">Parafinadora</legend>
           <div class="row">
             <div class="col-12 col-sm-5 col-md-5 col-lg-6 col-xl-12">
@@ -253,7 +259,7 @@
         </fieldset>
       </div>
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
-        <fieldset class="scheduler-border">
+        <fieldset class="scheduler-border" [disabled]="abiertoDesdeModuloL">
           <div class="row mt-2">
             <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-12 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
               <div class="input-group">
@@ -288,7 +294,7 @@
       <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
         <label>IdUnicoProducción: {{camposGenerales.idUnicoProduccion}}</label>
       </div>
-      <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+      <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9" *ngIf="!abiertoDesdeModuloL">
         <div class="row justify-content-end">
           <div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-3">
             <button class="btn btn-success w-100" [disabled]="camposGenerales.disabledBtnAcepta" (click)="btnAcepta()">

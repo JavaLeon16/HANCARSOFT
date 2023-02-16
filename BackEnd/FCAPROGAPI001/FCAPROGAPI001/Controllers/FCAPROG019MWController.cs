@@ -148,5 +148,33 @@ namespace FCAPROGAPI001.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
             }
         }
+
+        // METODOS DE PAGINA L
+
+        [HttpGet("cargaComboMaquinas")]
+        public async Task<IActionResult> cargaComboMaquinas()
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().cargaComboMaquinas(datosToken));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+
+        [HttpGet("buscaProgramas")]
+        public async Task<IActionResult> buscaProgramas(string fecha, string fechaF, string turno, string claveMaquina, string sinFechaProd)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().buscaProgramas(datosToken, fecha, fechaF, turno, claveMaquina, sinFechaProd));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
     }
 }

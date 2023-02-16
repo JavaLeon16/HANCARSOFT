@@ -64,7 +64,7 @@ namespace Entity
         public int LaminaDespeg { get; set; }
         public int LaminaComba { get; set; }
         public int LaminaMedidas { get; set; }
-        public int LLaminaImpres { get; set; }
+        public int LaminaImpres { get; set; }
         public int LaminaDimens { get; set; }
         public int LaminaPegad { get; set; }
         public string FechaSistema { get; set; }
@@ -120,5 +120,10 @@ namespace Entity
     {
         public int IdParafina { get; set; }
         public string Parafina { get; set; }
+    }
+
+    public class comboMaquinas
+    {
+        public string ClaveMaquina { get; set; }
     }
 }

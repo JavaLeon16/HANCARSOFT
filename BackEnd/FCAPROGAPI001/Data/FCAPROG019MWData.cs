@@ -260,7 +260,7 @@ namespace Data
                             DespCorrugadora = Convert.ToInt32(despCorrguradora),
                             DespImpresora = Convert.ToInt32(despImpresora),
                             DespAcabados = Convert.ToInt32(despAcabados),
-                            FechaNow = fechaNow,
+                            FechaNow = fechaNow.Replace("-", ""),
                             UsuarioERP = DatosToken.Usuario,
                             Parafina = parafina,
                             PesoLamina = Convert.ToInt32(pesoLamina),
@@ -271,11 +271,70 @@ namespace Data
 
                             Programa = Convert.ToInt32(programa),
                             ClaveMaquina = claveMaquina,
-                            wFechaAnterior = wFechaAnterior,
+                            wFechaAnterior = wFechaAnterior.Replace("-", ""),
                             IdUnico = Convert.ToInt32(idUnico)
                         },
                     commandType: CommandType.StoredProcedure);
-                    //objResult.data = await result.ReadAsync<datosBusquedaPrograma>();
+                    objResult.data = await result.ReadAsync<string>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+
+
+        // METODOS DE PAGINA L
+        public async Task<Result> cargaComboMaquinas(TokenData DatosToken)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 9
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<comboMaquinas>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+
+        public async Task<Result> buscaProgramas(TokenData DatosToken, string fecha, string fechaF, string turno, string claveMaquina, string sinFechaProd)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 10,
+                            Fecha = fecha.Replace("-", ""),
+                            FechaF = fechaF.Replace("-", ""),
+                            Turno = Convert.ToInt32(turno),
+                            ClaveMaquina = claveMaquina,
+                            SinFechaProd = sinFechaProd == "0" ? false : true
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<datosPrograma>();
                     objResult.Correcto = true;
                 }
                 return objResult;
