@@ -1,4 +1,5 @@
 ﻿using Business;
+using Entity;
 using Entity.DTO.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -170,6 +171,19 @@ namespace FCAPROGAPI001.Controllers
             try
             {
                 return Ok(await new FCAPROG019MWBusiness().buscaProgramas(datosToken, fecha, fechaF, turno, claveMaquina, sinFechaProd));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+
+        [HttpPost("actualizaSupTrip")]
+        public async Task<IActionResult> actualizaSupTrip(programasSeleccionadosL datos)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().actualizaSupTrip(datosToken, datos));
             }
             catch (Exception ex)
             {

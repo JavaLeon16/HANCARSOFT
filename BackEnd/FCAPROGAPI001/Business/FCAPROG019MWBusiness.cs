@@ -1,4 +1,5 @@
 ﻿using Data;
+using Entity;
 using Entity.DTO.Common;
 using System;
 using System.Collections.Generic;
@@ -62,6 +63,17 @@ namespace Business
         public Task<Result> buscaProgramas(TokenData DatosToken, string fecha, string fechaF, string turno, string claveMaquina, string sinFechaProd)
         {
             return new FCAPROG019MWData().buscaProgramas(DatosToken, fecha, fechaF, turno, claveMaquina, sinFechaProd);
+        }
+        public async Task<Result> actualizaSupTrip(TokenData DatosToken, programasSeleccionadosL datos)
+        {
+            try
+            {
+                return await new FCAPROG019MWData().actualizaSupTrip(DatosToken, datos);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
         }
     }
 }

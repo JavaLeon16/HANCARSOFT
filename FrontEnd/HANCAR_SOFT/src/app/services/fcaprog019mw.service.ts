@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { objGuardar } from '../models/DTO/fcaprog019mw';
+import { Observable } from 'rxjs';
+import { objGuardar, programasSeleccionadosL } from '../models/DTO/fcaprog019mw';
 
 const URL_PROGRAMACION = environment.FCAPROGAPI001 + 'FCAPROG019MW/';
 
@@ -104,5 +105,9 @@ export class Fcaprog019mwService {
       .append('claveMaquina', claveMaquina)
       .append('sinFechaProd', sinFechaProd ? '1' : '0');
     return await this.http.get(url, {params}).toPromise();
+  }
+  actualizaSupTrip(datos: programasSeleccionadosL): Observable<any> {
+    const url = URL_PROGRAMACION + 'actualizaSupTrip';
+    return this.http.post(url, datos);
   }
 }

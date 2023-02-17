@@ -106,7 +106,7 @@ export class Modulo3Component implements OnInit {
       this.servicioActVariable.pPrograma$.subscribe(async data => {
         this.camposGenerales.programa = data;
         await this.txtPrograma_change();
-        console.log(`El valor de la variable cambio a: ${data}`);
+        // console.log(`El valor de la variable cambio a: ${data}`);
       });
     }
   }
@@ -278,7 +278,17 @@ export class Modulo3Component implements OnInit {
       this.camposGenerales.desperdicioImpresora = row.laminaImpres ? row.laminaImpres : this.camposGenerales.desperdicioImpresora;
       this.camposGenerales.desperdicioLinea = row.desperdicioAcabados ? row.desperdicioAcabados : this.camposGenerales.desperdicioLinea;
       this.camposGenerales.cantidad = row.cantidad ? row.cantidad : this.camposGenerales.cantidad;
-      // Pendiente PickUp
+      // PickUp
+      if (!this.camposGenerales.disabledParafina) {
+        if (this.cbxParafina.datos && this.cbxParafina.datos.length > 0) {
+          for (const fila of this.cbxParafina.datos) {
+            if (fila.parafina === row.tipoParafina) {
+              this.cbxParafina.selected = fila.idParafina;
+              break;
+            }
+          }
+        }
+      }
       this.camposGenerales.pesoLamina = row.pesoLamina ? row.pesoLamina : this.camposGenerales.pesoLamina;
       this.camposGenerales.pesoCaja = row.pesoCaja ? row.pesoCaja : this.camposGenerales.pesoCaja;
       this.camposGenerales.retrabajo = row.retrabajo ? row.retrabajo : this.camposGenerales.retrabajo;

@@ -126,4 +126,21 @@ namespace Entity
     {
         public string ClaveMaquina { get; set; }
     }
+
+    public class programas
+    {
+        public string Fecha { get; set; }
+        public string Supervisor { get; set; }
+        public int IdTripulacion { get; set; }
+        public int IdUnico { get; set; }
+    }
+
+    public class programasSeleccionadosL
+    {
+        public List<programas> programasSeleccionados { get; set; }
+        public programasSeleccionadosL()
+        {
+            programasSeleccionados = new List<programas>();
+        }
+    }
 }

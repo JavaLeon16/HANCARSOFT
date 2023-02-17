@@ -7,29 +7,30 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 ALTER PROCEDURE [dbo].[FCAPROG019MWSPA2]
-	@Opcion INT						= NULL
-	, @Fecha VARCHAR(10)			= NULL
-	, @HoraIni VARCHAR(5)			= NULL
-	, @HoraFin VARCHAR(5)			= NULL
-	, @Turno INT					= NULL
-	, @Supervisor VARCHAR(10)		= NULL
-	, @Minutos INT					= NULL
-	, @DespCorrugadora INT			= NULL
-	, @DespImpresora INT			= NULL
-	, @DespAcabados INT				= NULL
-	, @FechaNow VARCHAR(15)			= NULL
-	, @UsuarioERP VARCHAR(6)		= NULL
-	, @Parafina VARCHAR(10)			= NULL
-	, @PesoLamina INT				= NULL
-	, @PesoCaja INT					= NULL
-	, @Retrabajo INT				= NULL
-	, @ActCantidad INT				= NULL
-	, @IdTripulacion INT			= NULL
+	@Opcion INT								= NULL
+	, @Fecha VARCHAR(10)					= NULL
+	, @HoraIni VARCHAR(5)					= NULL
+	, @HoraFin VARCHAR(5)					= NULL
+	, @Turno INT							= NULL
+	, @Supervisor VARCHAR(10)				= NULL
+	, @Minutos INT							= NULL
+	, @DespCorrugadora INT					= NULL
+	, @DespImpresora INT					= NULL
+	, @DespAcabados INT						= NULL
+	, @FechaNow VARCHAR(15)					= NULL
+	, @UsuarioERP VARCHAR(6)				= NULL
+	, @Parafina VARCHAR(10)					= NULL
+	, @PesoLamina INT						= NULL
+	, @PesoCaja INT							= NULL
+	, @Retrabajo INT						= NULL
+	, @ActCantidad INT						= NULL
+	, @IdTripulacion INT					= NULL
 
-	, @Programa INT					= NULL
-	, @ClaveMaquina VARCHAR(10)		= NULL
-	, @wFechaAnterior VARCHAR(10)	= NULL
-	, @IdUnico INT					= NULL
+	, @Programa INT							= NULL
+	, @ClaveMaquina VARCHAR(10)				= NULL
+	, @wFechaAnterior VARCHAR(10)			= NULL
+	, @IdUnico INT							= NULL
+	, @CMODAT021TD_001 CMODAT021TD_001		READONLY
 AS BEGIN
 	-- GUARDAR INFORMACIÓN
 	IF @Opcion = 1 
@@ -62,6 +63,26 @@ AS BEGIN
 			WHERE Programa = @Programa AND [Clave Maquina] = @ClaveMaquina
 				AND Turno = @Turno AND ISNULL(Fecha, '') = ISNULL(@wFechaAnterior, '')
 				AND IdUnico = @IdUnico;
+			COMMIT TRANSACTION;
+		END TRY
+		BEGIN CATCH
+			SELECT ERROR_MESSAGE()
+			ROLLBACK TRANSACTION;
+		END CATCH
+	END
+	-- ACTUALIZAR PAGINA L
+	ELSE IF @Opcion = 2
+	BEGIN
+		BEGIN TRANSACTION
+		BEGIN TRY
+			UPDATE CMODAT021
+				SET Fecha = A.Fecha,
+					Supervisor = A.Supervisor,
+					IdTripulacion = A.IdTripulacion
+			FROM @CMODAT021TD_001 A
+			JOIN CMODAT021 B ON A.IdUnico = B.IdUnico;
+
+			SELECT 'OK';
 			COMMIT TRANSACTION;
 		END TRY
 		BEGIN CATCH

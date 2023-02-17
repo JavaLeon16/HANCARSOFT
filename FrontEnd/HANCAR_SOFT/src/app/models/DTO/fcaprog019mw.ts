@@ -203,3 +203,13 @@ export class listProgramasL {
   idUnico: number;
   fecha: string;
 }
+
+export class programas {
+  fecha: string;
+  supervisor: string;
+  idTripulacion: number;
+  idUnico: number;
+}
+export class programasSeleccionadosL {
+  programasSeleccionados: Array<programas>;
+}

@@ -333,8 +333,49 @@ namespace Data
                             ClaveMaquina = claveMaquina,
                             SinFechaProd = sinFechaProd == "0" ? false : true
                         },
-                    commandType: CommandType.StoredProcedure);
+                    commandType: CommandType.StoredProcedure, commandTimeout: 120); // 2 minutos
                     objResult.data = await result.ReadAsync<datosPrograma>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> actualizaSupTrip(TokenData DatosToken, programasSeleccionadosL datos)
+        {
+            Result objResult = new Result();
+
+            List<programas> eDato = new List<programas>();
+            programas tmp;
+            for (int i = 0; i < datos.programasSeleccionados.Count; i++)
+            {
+                tmp = new programas();
+                tmp.Fecha = datos.programasSeleccionados[i].Fecha.Replace("-", "");
+                tmp.Supervisor = datos.programasSeleccionados[i].Supervisor.Trim();
+                tmp.IdTripulacion = datos.programasSeleccionados[i].IdTripulacion;
+                tmp.IdUnico = datos.programasSeleccionados[i].IdUnico;
+                eDato.Add(tmp);
+            }
+
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    TranformaDataTable Ds = new TranformaDataTable();
+
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPA2",
+                        new
+                        {
+                            Opcion = 2,
+                            CMODAT021TD_001 = Ds.CreateDataTable(eDato).AsTableValuedParameter("CMODAT021TD_001")
+                        },
+                    commandType: CommandType.StoredProcedure, commandTimeout: 60); // 1 mins
+                    objResult.data = await result.ReadAsync<string>();
                     objResult.Correcto = true;
                 }
                 return objResult;

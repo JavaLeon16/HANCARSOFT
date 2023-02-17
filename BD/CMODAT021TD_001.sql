@@ -1,0 +1,9 @@
+﻿USE [Cajas01]
+GO
+
+CREATE TYPE CMODAT021TD_001 AS TABLE (
+	Fecha VARCHAR(10),
+	Supervisor VARCHAR(20),
+	IdTripulacion INT,
+	IdUnico INT
+)

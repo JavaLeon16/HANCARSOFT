@@ -8,7 +8,7 @@ import { Fcaprog019mwService } from 'src/app/services/fcaprog019mw.service';
 import Swal from 'sweetalert2';
 
 import {
-  camposGeneralesL, listProgramasL, cbxSupervisor, cbxMaquinas, cbxTripulaciones
+  camposGeneralesL, listProgramasL, cbxSupervisor, cbxMaquinas, cbxTripulaciones, programasSeleccionadosL
 } from '../../../../models/DTO/fcaprog019mw';
 
 @Component({
@@ -32,6 +32,9 @@ export class PaginaLComponent implements OnInit {
   cbxTripulaciones: cbxTripulaciones;
   grid1: GridModel;
   programa: number;
+  objGuardarL: programasSeleccionadosL;
+  confirmButton: string = "#28A745";
+  cancelButton: string = "#DC3545";
 
   constructor(
     public pipe: DatePipe,
@@ -65,6 +68,7 @@ export class PaginaLComponent implements OnInit {
     this.cbxSupervisor = { selected: '', datos: [] };
     this.cbxMaquinas = { selected: '', datos: [] };
     this.cbxTripulaciones = { selected: 0, datos: [] };
+    this.objGuardarL = { programasSeleccionados: [] };
   }
 
   async ngOnInit(): Promise<void> {
@@ -157,7 +161,7 @@ export class PaginaLComponent implements OnInit {
   }
 
   async llenaListProgramas(): Promise<void> {
-    this.blockUI.start('Cargando Programa Seleccionado');
+    this.blockUI.start('Cargando Programas');
     this.datosGridProgramas = [];
     try {
       const res: any = await this.servicio.buscaProgramas(
@@ -258,6 +262,57 @@ export class PaginaLComponent implements OnInit {
     if (row) {
       this.servicioActVariable.pPrograma$.next(row.programa);
     }
+  }
+
+  async btnActualizar(): Promise<void> {
+    const seleccionados = this.datosGridProgramas.filter(row => row.sel);
+    if (seleccionados.length === 0) {
+      Swal.fire('Información', 'Favor de seleccionar prorgamas para actualizar...', 'info');
+      return;
+    }
+
+    const supervisor = this.cbxSupervisor.datos.filter(sup => sup.idSupervisor === this.cbxSupervisor.selected);
+    const tripulacion = this.cbxTripulaciones.datos.filter(trip => trip.idTripulacion === Number(this.cbxTripulaciones.selected));
+
+    this.objGuardarL.programasSeleccionados = [];
+    for (const iterator of seleccionados) {
+      this.objGuardarL.programasSeleccionados.push({
+        fecha: this.camposGenerales.pFechaProduccion,
+        supervisor: this.cbxSupervisor.selected,
+        idTripulacion: Number(this.cbxTripulaciones.selected),
+        idUnico: iterator.idUnico
+      })
+    }
+
+    Swal.fire({
+      title: '¿Desea continuar?',
+      text:
+      'Se actualizará el supervisor (' + (supervisor && supervisor.length > 0 ? supervisor[0].supervisor.trim() : '') + ') ' +
+      'y Tripulación (' + (tripulacion && tripulacion.length > 0 ? tripulacion[0].tripulacion : '') + ') ' +
+      'a los ' + seleccionados.length.toString() + ' PROGRAMAS que están en pantalla',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: this.confirmButton,
+      cancelButtonColor: this.cancelButton,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        this.blockUI.start('Actualizando Programas');
+        this.servicio.actualizaSupTrip(this.objGuardarL).subscribe(async (res: any) => {
+          this.blockUI.stop();
+          if (res.correcto && res.data) {
+            this.mensajeFlotante('Registros actualizados correctamente', 3400);
+          }
+          else {
+            Swal.fire('Información', res.data, 'info');
+          }
+        }, (err: any) => {
+          this.blockUI.stop();
+          Swal.fire('Error', 'Error: ' + err.error, 'error');
+        });
+      }
+    });
   }
 
   mensajeFlotante(mensaje: string, tiempo: number = 2700, icono: number = 0): void {
