@@ -82,14 +82,13 @@ export class PaginaLComponent implements OnInit {
   }
 
   async dateDiff(fechaI: string, fechaF: string): Promise<number> {
-
     var hi = fechaI, hf = fechaF;
     if (fechaI > fechaF) { hi = fechaF; hf = fechaI; }
 
-    var fi = new Date(this.setFormat(hi, 'yyyy-MM-dd', 'MM/dd/yyyy'));
-    var ff = new Date(this.setFormat(hf, 'yyyy-MM-dd', 'MM/dd/yyyy'));
+    const fi = new Date(this.setFormat(hi, 'yyyy-MM-dd', 'MM/dd/yyyy'));
+    const ff = new Date(this.setFormat(hf, 'yyyy-MM-dd', 'MM/dd/yyyy'));
 
-    const difDias = Math.floor((ff.getDate() - fi.getDate()) / (1000 * 60 * 60 * 24))
+    const difDias = ff.getDate() - fi.getDate();
 
     return difDias;
   }
@@ -150,11 +149,11 @@ export class PaginaLComponent implements OnInit {
 
   async btnBuscar(): Promise<void> {
     // PENDIENTE
-    // const difD = await this.dateDiff(this.camposGenerales.pFechaDel, this.camposGenerales.pFechaAl);
-    // if (difD >= 7 || difD < 0) {
-    //   Swal.fire('Información', 'Solo puede seleccionar 7 días de antiguedad a la fecha actual...', 'info');
-    //   return;
-    // }
+    const difD = await this.dateDiff(this.camposGenerales.pFechaDel, this.camposGenerales.pFechaAl);
+    if (difD >= 7 || difD < 0) {
+      Swal.fire('Información', 'Solo puede seleccionar 7 días de antiguedad a la fecha actual...', 'info');
+      return;
+    }
     this.camposGenerales.pSeleccionarTodos = false;
     this.datosGridProgramas = [];
     await this.llenaListProgramas();
