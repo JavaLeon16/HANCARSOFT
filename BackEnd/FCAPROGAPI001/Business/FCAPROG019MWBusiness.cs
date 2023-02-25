@@ -75,5 +75,64 @@ namespace Business
                 throw new ArgumentException(ex.Message);
             }
         }
+
+
+        // =========================================================================================================================================
+        // MODULO 2
+
+        public Task<Result> buscaProgramaMod2(TokenData DatosToken, string programa)
+        {
+            return new FCAPROG019MWData().buscaProgramaMod2(DatosToken, programa);
+        }
+        public Task<Result> getClavesPreparacion(TokenData DatosToken, string claveMaquina)
+        {
+            return new FCAPROG019MWData().getClavesPreparacion(DatosToken, claveMaquina);
+        }
+        public Task<Result> obtenerDesperdicios(TokenData DatosToken, string op, string programa, string turno, string tipoConsulta)
+        {
+            return new FCAPROG019MWData().obtenerDesperdicios(DatosToken, op, programa, turno, tipoConsulta);
+        }
+        public Task<Result> cargaSupsMod2(TokenData DatosToken, string programa, string turno)
+        {
+            return new FCAPROG019MWData().cargaSupsMod2(DatosToken, programa, turno);
+        }
+        public Task<Result> cargaSuajeMod2(TokenData DatosToken, string suaje)
+        {
+            return new FCAPROG019MWData().cargaSuajeMod2(DatosToken, suaje);
+        }
+        public Task<Result> cargaGrabadosMod2(TokenData DatosToken, string articulo)
+        {
+            return new FCAPROG019MWData().cargaGrabadosMod2(DatosToken, articulo);
+        }
+        public Task<Result> cargaMaqProcAntMod2(TokenData DatosToken)
+        {
+            return new FCAPROG019MWData().cargaMaqProcAntMod2(DatosToken);
+        }
+        public Task<Result> cargaCantidadRecMod2(TokenData DatosToken, string op, string claveMaquina, string programa)
+        {
+            return new FCAPROG019MWData().cargaCantidadRecMod2(DatosToken, op, claveMaquina, programa);
+        }
+        public Task<Result> cargaConceptosDesp(
+            TokenData DatosToken, string maquinaDesperdicio, string op, string programa, string claveMaquina, string turno,
+            string aplicaCajaRec, string esUtilizado, string esContabilizadoPLC, string esProcesoAnterior
+        )
+        {
+            return new FCAPROG019MWData().cargaConceptosDesp(
+                DatosToken, maquinaDesperdicio, op, programa, claveMaquina, turno,
+                aplicaCajaRec, esUtilizado, esContabilizadoPLC, esProcesoAnterior
+            );
+        }
+        public Task<Result> guardarDespMod2(TokenData DatosToken, camposFrmDesp datos)
+        {
+            return new FCAPROG019MWData().guardarDespMod2(DatosToken, datos);
+        }
+        public Task<Result> validaDatosSupervisorMod2(TokenData DatosToken, string claveMaquina, string turno, string fecha, string claveSup, string programa)
+        {
+            return new FCAPROG019MWData().validaDatosSupervisorMod2(DatosToken, claveMaquina, turno, fecha, claveSup, programa);
+        }
+        public Task<Result> gardarDatosMod2(TokenData DatosToken, camposGuardado datos)
+        {
+            return new FCAPROG019MWData().gardarDatosMod2(DatosToken, datos);
+        }
     }
 }

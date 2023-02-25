@@ -190,5 +190,161 @@ namespace FCAPROGAPI001.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
             }
         }
+
+        // =========================================================================================================================================
+        // MODULO 2 
+        [HttpGet("buscaProgramaMod2")]
+        public async Task<IActionResult> buscaProgramaMod2(string programa)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().buscaProgramaMod2(datosToken, programa));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        [HttpGet("getClavesPreparacion")]
+        public async Task<IActionResult> getClavesPreparacion(string claveMaquina)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().getClavesPreparacion(datosToken, claveMaquina));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        [HttpGet("obtenerDesperdicios")]
+        public async Task<IActionResult> obtenerDesperdicios(string op, string programa, string turno, string tipoConsulta)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().obtenerDesperdicios(datosToken, op, programa, turno, tipoConsulta));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        [HttpGet("cargaSupsMod2")]
+        public async Task<IActionResult> cargaSupsMod2(string programa, string turno)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().cargaSupsMod2(datosToken, programa, turno));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        [HttpGet("cargaSuajeMod2")]
+        public async Task<IActionResult> cargaSuajeMod2(string suaje)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().cargaSuajeMod2(datosToken, suaje));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        [HttpGet("cargaGrabadosMod2")]
+        public async Task<IActionResult> cargaGrabadosMod2(string articulo)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().cargaGrabadosMod2(datosToken, articulo));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        [HttpGet("cargaMaqProcAntMod2")]
+        public async Task<IActionResult> cargaMaqProcAntMod2()
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().cargaMaqProcAntMod2(datosToken));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        [HttpGet("cargaCantidadRecMod2")]
+        public async Task<IActionResult> cargaCantidadRecMod2(string op, string claveMaquina, string programa)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().cargaCantidadRecMod2(datosToken, op, claveMaquina, programa));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        [HttpGet("cargaConceptosDesp")]
+        public async Task<IActionResult> cargaConceptosDesp(
+            string maquinaDesperdicio, string op, string programa, string claveMaquina, string turno,
+            string aplicaCajaRec, string esUtilizado, string esContabilizadoPLC, string esProcesoAnterior
+        )
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().cargaConceptosDesp(
+                    datosToken, maquinaDesperdicio, op, programa, claveMaquina, turno,
+                    aplicaCajaRec, esUtilizado, esContabilizadoPLC, esProcesoAnterior
+                ));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        // GUARDAR DATOS DESPERDICIO MODAL MODULO 2
+        [HttpPost("guardarDespMod2")]
+        public async Task<IActionResult> guardarDespMod2(camposFrmDesp datos)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().guardarDespMod2(datosToken, datos));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+
+        [HttpGet("validaDatosSupervisorMod2")]
+        public async Task<IActionResult> validaDatosSupervisorMod2(string claveMaquina, string turno, string fecha, string claveSup, string programa)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().validaDatosSupervisorMod2(datosToken, claveMaquina, turno, fecha, claveSup, programa));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
+        // GUARDAR DATOS MODULO 2
+        [HttpPost("gardarDatosMod2")]
+        public async Task<IActionResult> gardarDatosMod2(camposGuardado datos)
+        {
+            try
+            {
+                return Ok(await new FCAPROG019MWBusiness().gardarDatosMod2(datosToken, datos));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error, {ex.Message}");
+            }
+        }
     }
 }

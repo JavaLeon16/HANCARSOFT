@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { objGuardar, programasSeleccionadosL } from '../models/DTO/fcaprog019mw';
+import { camposFrmDesp, camposGuardado, objGuardar, programasSeleccionadosL } from '../models/DTO/fcaprog019mw';
 
 const URL_PROGRAMACION = environment.FCAPROGAPI001 + 'FCAPROG019MW/';
 
@@ -108,6 +108,98 @@ export class Fcaprog019mwService {
   }
   actualizaSupTrip(datos: programasSeleccionadosL): Observable<any> {
     const url = URL_PROGRAMACION + 'actualizaSupTrip';
+    return this.http.post(url, datos);
+  }
+
+  // =========================================================================================================================================
+  // MODULO 2
+
+  async buscaProgramaMod2(programa: number): Promise<object> {
+    const url = URL_PROGRAMACION + 'buscaProgramaMod2';
+    const params = new HttpParams()
+      .append("programa", programa ? programa.toString().trim() : '0');
+    return await this.http.get(url, {params}).toPromise();
+  }
+  async getClavesPreparacion(claveMaquina: string): Promise<object> {
+    const url = URL_PROGRAMACION + 'getClavesPreparacion';
+    const params = new HttpParams()
+      .append("claveMaquina", claveMaquina ? claveMaquina.trim() : '');
+    return await this.http.get(url, {params}).toPromise();
+  }
+  async obtenerDesperdicios(op: string, programa: number, turno: string, tipoConsulta: string = '0'): Promise<object> {
+    const url = URL_PROGRAMACION + 'obtenerDesperdicios';
+    const params = new HttpParams()
+      .append("op", op ? op.trim() : '')
+      .append("programa", programa ? programa.toString() : '0')
+      .append("turno", turno ? turno.trim() : '')
+      .append("tipoConsulta", tipoConsulta ? tipoConsulta.trim() : '');
+    return await this.http.get(url, {params}).toPromise();
+  }
+  async cargaSupsMod2(programa: number, turno: string): Promise<object> {
+    const url = URL_PROGRAMACION + 'cargaSupsMod2';
+    const params = new HttpParams()
+      .append("programa", programa ? programa.toString() : '0')
+      .append("turno", turno ? turno.trim() : '');
+    return await this.http.get(url, {params}).toPromise();
+  }
+  async cargaSuajeMod2(suaje: string): Promise<object> {
+    const url = URL_PROGRAMACION + 'cargaSuajeMod2';
+    const params = new HttpParams()
+      .append("suaje", suaje ? suaje.trim() : '');
+    return await this.http.get(url, {params}).toPromise();
+  }
+  async cargaGrabadosMod2(articulo: string): Promise<object> {
+    const url = URL_PROGRAMACION + 'cargaGrabadosMod2';
+    const params = new HttpParams()
+      .append("articulo", articulo ? articulo.trim() : '');
+    return await this.http.get(url, {params}).toPromise();
+  }
+  async cargaMaqProcAntMod2(): Promise<object> {
+    const url = URL_PROGRAMACION + 'cargaMaqProcAntMod2';
+    // const params = new HttpParams();
+    return await this.http.get(url/*, {params}*/).toPromise();
+  }
+  async cargaCantidadRecMod2(op: string, claveMaquina: string, programa: number): Promise<object> {
+    const url = URL_PROGRAMACION + 'cargaCantidadRecMod2';
+    const params = new HttpParams()
+      .append('op', op ? op.trim(): '')
+      .append('claveMaquina', claveMaquina ? claveMaquina.trim(): '')
+      .append('programa', programa ? programa.toString(): '0');
+    return await this.http.get(url, {params}).toPromise();
+  }
+  async cargaConceptosDesp(
+    maquinaDesperdicio: string, op: string, programa: number, claveMaquina: string, turno: string,
+    aplicaCajaRec: boolean, esUtilizado: boolean, esContabilizadoPLC: boolean, esProcesoAnterior: boolean
+  ): Promise<object> {
+    const url = URL_PROGRAMACION + 'cargaConceptosDesp';
+    const params = new HttpParams()
+      .append('maquinaDesperdicio', maquinaDesperdicio ? maquinaDesperdicio.trim(): '')
+      .append('op', op ? op.trim(): '')
+      .append('programa', programa ? programa.toString(): '')
+      .append('claveMaquina', claveMaquina ? claveMaquina.trim(): '')
+      .append('turno', turno ? turno.trim(): '')
+      .append('aplicaCajaRec', aplicaCajaRec ? '1': '0')
+      .append('esUtilizado', esUtilizado ? '1': '0')
+      .append('esContabilizadoPLC', esContabilizadoPLC ? '1': '0')
+      .append('esProcesoAnterior', esProcesoAnterior ? '1': '0');
+    return await this.http.get(url, {params}).toPromise();
+  }
+  guardarDespMod2(datos: camposFrmDesp): Observable<any> {
+    const url = URL_PROGRAMACION + 'guardarDespMod2';
+    return this.http.post(url, datos);
+  }
+  async validaDatosSupervisorMod2(claveMaquina: string, turno: string, fecha: string, claveSup: string, programa: number): Promise<object> {
+    const url = URL_PROGRAMACION + 'validaDatosSupervisorMod2';
+    const params = new HttpParams()
+      .append("claveMaquina", claveMaquina ? claveMaquina.trim() : '')
+      .append("turno", turno ? turno.trim() : '')
+      .append("fecha", fecha ? fecha.trim() : '')
+      .append("claveSup", claveSup ? claveSup.trim() : '')
+      .append("programa", programa ? programa.toString().trim() : '0');
+    return await this.http.get(url, {params}).toPromise();
+  }
+  gardarDatosMod2(datos: camposGuardado): Observable<any> {
+    const url = URL_PROGRAMACION + 'gardarDatosMod2';
     return this.http.post(url, datos);
   }
 }

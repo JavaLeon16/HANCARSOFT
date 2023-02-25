@@ -1,0 +1,1079 @@
+<div class="contenedor">
+  <div class="cabecera" *ngIf="visibleTituloModulo">
+    <label style="margin-left: 20px; margin-top: 10px">{{
+      tituloModulo
+    }}</label>
+  </div>
+  <fieldset [disabled]="abiertoDesdeModuloL">
+    <div class="container-fluid">
+      <fieldset class="scheduler-border-hijo">
+        <legend class="scheduler-border-hijo">&nbsp;Captura Producción</legend>
+
+        <div class="row">
+          <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Programa"
+                [(ngModel)]="camposGenerales.programa"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-info"
+                  type="button"
+                  (click)="btnBuscarPrograma()"
+                >
+                  <span class="fas fa-search"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtMaquina"
+                  >Máquina:</label
+                >
+              </div>
+              <input
+                id="m2_txtMaquina"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.claveMaquina"
+                disabled
+              />
+            </div>
+          </div>
+          <div
+            class="col-5 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtTurno">Turno:</label>
+              </div>
+              <input
+                id="m2_txtTurno"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.turno"
+                (change)="m2_txtTurno_Change()"
+                disabled
+              />
+            </div>
+          </div>
+          <div
+            class="col-7 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtFecha">Fecha:</label>
+              </div>
+              <input
+                id="m2_txtFecha"
+                type="date"
+                [(ngModel)]="camposGenerales.fecha"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div
+            class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtHoraInicio"
+                  >Hora Inicio:</label
+                >
+              </div>
+              <input
+                id="m2_txtHoraInicio"
+                type="time"
+                class="form-control"
+                placeholder="00:00"
+                [(ngModel)]="camposGenerales.horaIni"
+              />
+            </div>
+          </div>
+          <div
+            class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtHoraFin"
+                  >Hora Fin:</label
+                >
+              </div>
+              <input
+                id="m2_txtHoraFin"
+                type="time"
+                class="form-control"
+                placeholder="00:00"
+                [(ngModel)]="camposGenerales.horaFin"
+              />
+            </div>
+          </div>
+          <div
+            class="col-6 col-sm-4 col-md-4 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="form-check form-check-inline w-100">
+              <div class="input-group">
+                <div class="input-group-prepend w-100">
+                  <div class="input-group-text w-100">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="m2_chkUltimoProceso"
+                      [(ngModel)]="camposGenerales.ultimoProceso"
+                    />
+                    <label
+                      class="form-check-label text-left w-100"
+                      for="m2_chkUltimoProceso"
+                      >Último Proceso</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-6 col-sm-4 col-md-4 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="form-check form-check-inline w-100">
+              <div class="input-group">
+                <div class="input-group-prepend w-100">
+                  <div class="input-group-text w-100">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="m2_chkPegado"
+                      [(ngModel)]="camposGenerales.pegado"
+                    />
+                    <label
+                      class="form-check-label text-left w-100"
+                      for="m2_chkPegado"
+                      >Pegado</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-6 col-sm-4 col-md-4 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtCantidad"
+                  >Cantidad:</label
+                >
+              </div>
+              <input
+                id="m2_txtCantidad"
+                type="number"
+                class="form-control"
+                [(ngModel)]="camposGenerales.cantidad"
+                [disabled]="camposGenerales.ultimoProceso"
+              />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="row mt-2">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m2_cbxSuaje">Suaje:</label>
+            </div>
+            <select
+              id="m2_cbxSuaje"
+              class="custom-select"
+              [(ngModel)]="cbxSuaje.selected"
+            >
+              <option
+                *ngFor="let dato of cbxSuaje.datos"
+                value="{{ dato.codigoGrabadoSuaje }}"
+              >
+                {{ dato.compuesto }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div
+          class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0"
+        >
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m2_cbxGrabacion"
+                >Grabación:</label
+              >
+            </div>
+            <select
+              id="m2_cbxGrabacion"
+              class="custom-select"
+              [(ngModel)]="cbxGrabado.selected"
+            >
+              <option
+                *ngFor="let dato of cbxGrabado.datos"
+                value="{{ dato.codigoGrabadoSuaje }}"
+              >
+                {{ dato.compuesto }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div
+          class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+        >
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m2_cbxSupervisor"
+                >Supervisor:</label
+              >
+            </div>
+            <select
+              id="m2_cbxSupervisor"
+              class="custom-select"
+              [(ngModel)]="cbxSupervisor.selected"
+            >
+              <option
+                *ngFor="let dato of cbxSupervisor.datos"
+                value="{{ dato.idSupervisor }}"
+              >
+                {{ dato.supervisor }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div
+          class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+        >
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="m2_cbxTripulacion"
+                >Tripulación:</label
+              >
+            </div>
+            <select
+              id="m2_cbxTripulacion"
+              class="custom-select"
+              [(ngModel)]="cbxTripulaciones.selected"
+            >
+              <option
+                *ngFor="let dato of cbxTripulaciones.datos"
+                value="{{ dato.idTripulacion }}"
+              >
+                {{ dato.tripulacion }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <fieldset class="scheduler-border-hijo">
+        <legend class="scheduler-border-hijo">&nbsp;Master</legend>
+        <div class="row">
+          <div
+            class="col-12 col-sm-4 col-md-5 col-lg-5 col-xl-5 mt-0 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtOP">OP:</label>
+              </div>
+              <input
+                id="m2_txtOP"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.op"
+                disabled
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-8 col-md-7 col-lg-7 col-xl-7 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtClaveArticulo"
+                  >Clave Artículo:</label
+                >
+              </div>
+              <input
+                id="m2_txtClaveArticulo"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.claveArticulo"
+                disabled
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtArticulo"
+                  >Artículo:</label
+                >
+              </div>
+              <input
+                id="m2_txtArticulo"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.articulo"
+                disabled
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtSuaje">Suaje:</label>
+              </div>
+              <input
+                id="m2_txtSuaje"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.suaje"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="scheduler-border-hijo">
+        <legend class="scheduler-border-hijo">&nbsp;Preparación</legend>
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="form-check form-check-inline w-100">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="chkModCvePreparacion"
+                      [(ngModel)]="camposGenerales.disabledCbxClavePreparacion"
+                    />
+                    <label class="form-check-label" for="chkModCvePreparacion"
+                      >Mod. Cve. Preparación</label
+                    >
+                  </div>
+                </div>
+                <select
+                  class="custom-select"
+                  [(ngModel)]="cbxClaveProceso.selected"
+                  [disabled]="!camposGenerales.disabledCbxClavePreparacion"
+                >
+                  <option
+                    *ngFor="let dato of cbxClaveProceso.datos"
+                    value="{{ dato.claveProceso }}"
+                  >
+                    {{ dato.compuesto }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2">
+            <div class="form-check form-check-inline w-100">
+              <div class="input-group">
+                <div class="input-group-prepend w-100">
+                  <div class="input-group-text w-100">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="m2_chkIgnoraTiempoPrep"
+                      [(ngModel)]="camposGenerales.sinPreparacion"
+                    />
+                    <label
+                      class="form-check-label text-left w-100"
+                      for="m2_chkIgnoraTiempoPrep"
+                      >Ignora Tiempo Preparación</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtMinStdProd"
+                  >Min. Std. Prod:</label
+                >
+              </div>
+              <input
+                id="m2_txtMinStdProd"
+                type="number"
+                class="form-control"
+                [(ngModel)]="camposGenerales.minStdProd"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="scheduler-border-hijo">
+        <legend class="scheduler-border-hijo">&nbsp;Tintas</legend>
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtPrimerColorCantidad"
+                  >1er. Color:</label
+                >
+              </div>
+              <input
+                id="m2_txtPrimerColor"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.primerColor"
+                disabled
+              />
+              <input
+                id="m2_txtPrimerColorCantidad"
+                type="number"
+                placeholder="Cantidad"
+                class="form-control"
+                [(ngModel)]="camposGenerales.cantidadPrimerColor"
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtSegundoColorCantidad"
+                  >2do. Color:</label
+                >
+              </div>
+              <input
+                id="m2_txtSegundoColor"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.segundoColor"
+                disabled
+              />
+              <input
+                id="m2_txtSegundoColorCantidad"
+                type="number"
+                placeholder="Cantidad"
+                class="form-control"
+                [(ngModel)]="camposGenerales.cantidadSegundoColor"
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtTercerColorCantidad"
+                  >3er. Color:</label
+                >
+              </div>
+              <input
+                id="m2_txtTercerColor"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.tercerColor"
+                disabled
+              />
+              <input
+                id="m2_txtTercerColorCantidad"
+                type="number"
+                placeholder="Cantidad"
+                class="form-control"
+                [(ngModel)]="camposGenerales.cantidadTercerColor"
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtCuartoColorCantidad"
+                  >4to. Color:</label
+                >
+              </div>
+              <input
+                id="m2_txtCuartoColor"
+                type="text"
+                class="form-control"
+                [(ngModel)]="camposGenerales.cuartoColor"
+                disabled
+              />
+              <input
+                id="m2_txtCuartoColorCantidad"
+                type="number"
+                placeholder="Cantidad"
+                class="form-control"
+                [(ngModel)]="camposGenerales.cantidadCuartoColor"
+              />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="scheduler-border-hijo">
+        <legend class="scheduler-border-hijo">&nbsp;Operación</legend>
+        <div class="row">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtPiezasSuaje"
+                  >Pzas. Suaje:</label
+                >
+              </div>
+              <input
+                id="m2_txtPiezasSuaje"
+                type="number"
+                class="form-control"
+                [(ngModel)]="camposGenerales.piezasCorte"
+                disabled
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mt-2 mt-sm-0 mt-md-2 mt-lg-0 mt-xl-0"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtVelocidad"
+                  >Velocidad:</label
+                >
+              </div>
+              <input
+                id="m2_txtVelocidad"
+                type="number"
+                class="form-control"
+                [(ngModel)]="camposGenerales.velocidad"
+                disabled
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mt-2 mt-sm-0 mt-md-2 mt-lg-0 mt-xl-0"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtEficiencia"
+                  >Eficiencia:</label
+                >
+              </div>
+              <input
+                id="m2_txtEficiencia"
+                type="number"
+                class="form-control"
+                [(ngModel)]="camposGenerales.eficiencia"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="scheduler-border-hijo">
+        <legend class="scheduler-border-hijo">
+          &nbsp;Capturar Desperdicios
+        </legend>
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-4 col-lg-12 col-xl-4">
+            <fieldset class="scheduler-border-hijo">
+              <legend class="scheduler-border-hijo">
+                &nbsp;Proceso Anterior
+              </legend>
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-12">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="m2_txtMaquina1"
+                        >Maquina:</label
+                      >
+                    </div>
+                    <input
+                      id="m2_txtMaquina1"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="camposGenerales.maquinaProcAnt"
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div
+                  class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-2"
+                >
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="m2_txtUtilizado1"
+                        >Utilizado:</label
+                      >
+                    </div>
+                    <input
+                      id="m2_txtUtilizado1"
+                      type="number"
+                      placeholder="Pzas"
+                      class="form-control"
+                      (focus)="m2_txtUtilizado1_focus()"
+                      (focusout)="m2_txtUtilizado1_focus()"
+                      [(ngModel)]="camposGenerales.utilizadoPA1"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+                >
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="m2_txtNoUtilizado1"
+                        >No Utilizado:</label
+                      >
+                    </div>
+                    <input
+                      id="m2_txtNoUtilizado1"
+                      type="number"
+                      placeholder="Laminas"
+                      class="form-control"
+                      (focus)="m2_txtNoUtilizado1_focus()"
+                      (focusout)="m2_txtNoUtilizado1_focus()"
+                      [(ngModel)]="camposGenerales.noUtilizadoPA1"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+                >
+                  <button
+                    class="btn btn-secondary"
+                    type="button"
+                    (click)="btnModalConceptosPA1()"
+                  >
+                    Conceptos
+                  </button>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-12 col-sm-12 col-md-4 col-lg-12 col-xl-4">
+            <fieldset
+              class="scheduler-border-hijo"
+              [disabled]="camposGenerales.disabledPanelPA"
+            >
+              <legend class="scheduler-border-hijo">
+                &nbsp;Proceso Anterior
+              </legend>
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-12">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="m2_cbxMaquinaProcAnt"
+                        >Maquina:</label
+                      >
+                    </div>
+                    <select
+                      id="m2_cbxMaquinaProcAnt"
+                      class="custom-select"
+                      [(ngModel)]="cbxMaquinaProcAnt.selected"
+                      [disabled]="camposGenerales.disabledMaquinaPA"
+                    >
+                      <option
+                        *ngFor="let dato of cbxMaquinaProcAnt.datos"
+                        value="{{ dato.claveMaquina }}"
+                      >
+                        {{ dato.claveMaquina }}
+                      </option>
+                    </select>
+                    <!-- <input
+                      id="m2_txtMaquina2"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="camposGenerales.maqPA"
+                      [disabled]="camposGenerales.disabledMaquinaPA"
+                    /> -->
+                  </div>
+                </div>
+                <div
+                  class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-2"
+                >
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="m2_txtUtilizado2"
+                        >Utilizado:</label
+                      >
+                    </div>
+                    <input
+                      id="m2_txtUtilizado2"
+                      type="number"
+                      placeholder="Pzas"
+                      class="form-control"
+                      (focus)="m2_txtUtilizado2_focus()"
+                      (focusout)="m2_txtUtilizado2_focus()"
+                      [(ngModel)]="camposGenerales.utilizadoPA2"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+                >
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="m2_txtNoUtilizado2"
+                        >No Utilizado:</label
+                      >
+                    </div>
+                    <input
+                      id="m2_txtNoUtilizado2"
+                      type="number"
+                      placeholder="Pzas"
+                      class="form-control"
+                      (focus)="m2_txtNoUtilizado2_focus()"
+                      (focusout)="m2_txtNoUtilizado2_focus()"
+                      [(ngModel)]="camposGenerales.despPA"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+                >
+                  <button
+                    class="btn btn-secondary"
+                    type="button"
+                    (click)="btnModalConceptosPA2()"
+                    [disabled]="camposGenerales.disabledBtnConceptos2"
+                  >
+                    Conceptos
+                  </button>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-12 col-sm-12 col-md-4 col-lg-12 col-xl-4">
+            <fieldset
+              class="scheduler-border-hijo"
+              [disabled]="camposGenerales.disabledPanelProcesoActual"
+            >
+              <legend class="scheduler-border-hijo">
+                &nbsp;Proceso Actual
+              </legend>
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-12">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="m2_txtMaquina3"
+                        >Maquina:</label
+                      >
+                    </div>
+                    <input
+                      id="m2_txtMaquina3"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="camposGenerales.maquinaProcAct"
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div
+                  class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-2"
+                >
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="m2_txtContabilizado"
+                        >Contabilizado:</label
+                      >
+                    </div>
+                    <input
+                      id="m2_txtContabilizado"
+                      type="number"
+                      placeholder="Pzas"
+                      class="form-control"
+                      (focus)="m2_txtContabilizado_focus()"
+                      (focusout)="m2_txtContabilizado_focus()"
+                      [(ngModel)]="camposGenerales.contabilizadoPA"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+                >
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label
+                        class="input-group-text"
+                        for="m2_txtNoContabilizado"
+                        >No Contabilizado:</label
+                      >
+                    </div>
+                    <input
+                      id="m2_txtNoContabilizado"
+                      type="number"
+                      placeholder="Pzas"
+                      class="form-control"
+                      (focus)="m2_txtNoContabilizado_focus()"
+                      (focusout)="m2_txtNoContabilizado_focus()"
+                      [(ngModel)]="camposGenerales.noContabilizadoPA"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-12 mt-2 mt-sm-2 mt-md-2 mt-lg-2 mt-xl-2"
+                >
+                  <button
+                    class="btn btn-secondary"
+                    type="button"
+                    (click)="btnModalConceptosPA3()"
+                  >
+                    Conceptos
+                  </button>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="scheduler-border-hijo">
+        <legend class="scheduler-border-hijo">
+          &nbsp;Otros Datos (peso kg)
+        </legend>
+        <div class="row">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtMaquina1"
+                  >Lamina:</label
+                >
+              </div>
+              <input
+                id="m2_txtMaquina1"
+                type="number"
+                placeholder="Kg."
+                class="form-control"
+                [(ngModel)]="camposGenerales.pesoLamina"
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mt-2 mt-sm-0 mt-md-2 mt-lg-0 mt-xl-0"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtMaquina1"
+                  >Caja:</label
+                >
+              </div>
+              <input
+                id="m2_txtMaquina1"
+                type="number"
+                placeholder="Kg."
+                class="form-control"
+                [(ngModel)]="camposGenerales.pesoCaja"
+              />
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mt-2 mt-sm-0 mt-md-2 mt-lg-0 mt-xl-0"
+          >
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="m2_txtMaquina1"
+                  >Retrabajo:</label
+                >
+              </div>
+              <input
+                id="m2_txtMaquina1"
+                type="number"
+                placeholder="Kg."
+                class="form-control"
+                [(ngModel)]="camposGenerales.retrabajo"
+              />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <fieldset class="scheduler-border-hijo">
+            <legend class="scheduler-border-hijo">&nbsp;Cajas Rec</legend>
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="m2_txtCantidadCajasRec"
+                      >Cantidad:</label
+                    >
+                  </div>
+                  <input
+                    id="m2_txtCantidadCajasRec"
+                    type="number"
+                    class="form-control"
+                    (focus)="m2_txtCantidadCajasRec_focus()"
+                    (focusout)="m2_txtCantidadCajasRec_focus()"
+                    [(ngModel)]="camposGenerales.cantidadCajasRec"
+                  />
+                  <div class="input-group-append">
+                    <button class="btn btn-info" type="button" (click)="btnModalConceptosCajasRec()">
+                      <span class="fas fa-search"></span>&nbsp;Conceptos
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div
+          class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right mt-2 mt-sm-2 mt-md-4 mt-lg-4 mt-xl-4"
+        >
+          <button class="btn btn-success mr-2" type="button" (click)="btnGuardar()">
+            <span class="fas fa-check"></span>&nbsp;Acepta
+          </button>
+          <button class="btn btn-danger" type="button">
+            <span class="fas fa-times"></span>&nbsp;Cancela
+          </button>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <textarea
+            class="form-control"
+            rows="4"
+            [(ngModel)]="camposGenerales.notasOperacion"
+            disabled
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <label
+            >IdUnicoProducción: {{ camposGenerales.idUnicoProduccion }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+<!-- Encontró datos al buscar Programa -->
+<ng-template #mdlValida let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title"><i class="fa fa-pencil"></i> Producción OP</h5>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <i class="fas fa-times" aria-hidden="true"></i>
+    </button> -->
+  </div>
+
+  <div class="modal-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <label
+            style="font-weight: bold"
+            *ngIf="datosGridValidacion.length > 0"
+            >{{ datosGridValidacion[0].op }}</label
+          >
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <grid-cs
+            #gridValidacion
+            [columnDefs]="columnasGridValidacion"
+            [(data)]="datosGridValidacion"
+            [rowsPerPage]="8"
+            [enablePagination]="true"
+          >
+          </grid-cs>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div
+          class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-end"
+        >
+          <!-- <button type="button" class="btn btn-success" (click)="mdlValida_clickAcepta()">
+            <span class="fas fa-check"></span>
+            Aceptar
+          </button> -->
+          <button
+            type="button"
+            class="btn btn-secondary ml-2"
+            (click)="modal.dismiss(); limpiarCampos()"
+          >
+            <span class="fas fa-undo"></span>
+            Regresar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #frmDesperdicioCpt let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <i class="fa fa-pencil"></i> Captura de Desperdicio por Concepto
+    </h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <i class="fas fa-times" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <app-mdlfrm-desperdiciocpt [camposFrmDesp]="camposFrmDesp" *ngIf="camposFrmDesp.modalHabilitado"></app-mdlfrm-desperdiciocpt>
+
+  <div class="modal-body">
+    <div class="container-fluid">
+      <div class="row mt-2">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="frmDesperdicioCpt_TotalCapturado">
+                Total Capturado:
+              </label>
+            </div>
+            <input
+              id="frmDesperdicioCpt_TotalCapturado"
+              type="number"
+              class="form-control"
+              [(ngModel)]="camposFrmDesp.totalCapturado"
+              disabled
+            />
+          </div>
+        </div>
+        <div
+          class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 d-flex justify-content-end"
+        >
+          <button type="button" class="btn btn-success" (click)="frmDesperdicioCpt_btnAceptar()">
+            <span class="fas fa-check"></span>
+            Aceptar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary ml-2"
+            (click)="modal.dismiss();"
+          >
+            <span class="fas fa-undo"></span>
+            Regresar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</ng-template>
+
+<block-ui></block-ui>

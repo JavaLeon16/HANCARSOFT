@@ -1,6 +1,6 @@
 <div class="contenedor">
   <div class="cabecera">
-    <label style="margin-left: 20px; margin-top: 10px;">{{tituloModulo}}</label>
+    <label style="margin-left: 20px; margin-top: 10px;">{{pModuloVisualizar === 'modulo3' ? tituloModulo3 : tituloModulo2}}</label>
   </div>
 
   <div class="container-fluid mt-2">
@@ -167,7 +167,8 @@
       <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-10 mt-2">
         <!-- Cargar aquí los distintos componentes (módulos) -->
         <fieldset class="scheduler-border-padre">
-          <app-modulo3 [abiertoDesdeModuloL]="true" [visibleTituloModulo]="false"></app-modulo3>
+          <app-modulo3 *ngIf="pModuloVisualizar==='modulo3'" [abiertoDesdeModuloL]="true" [visibleTituloModulo]="false"></app-modulo3>
+          <app-modulo2 *ngIf="pModuloVisualizar==='modulo2'" [abiertoDesdeModuloL]="true" [visibleTituloModulo]="false"></app-modulo2>
         </fieldset>
       </div>
     </div>

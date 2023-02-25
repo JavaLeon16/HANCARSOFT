@@ -15,16 +15,6 @@ const routes: Routes = [
     component: AuthComponent
   },
   {
-    path: 'progauto',
-    loadChildren: () => import('./modules/progauto/progauto.module').then((m) => m.ProgautoModule),
-    // canActivate: [AuthGuard]
-  },
-  {
-    path: 'secimp',
-    loadChildren: () => import('./modules/secimp/secimp.module').then((m) => m.SecimpModule),
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'hancarsoft',
     loadChildren: () => import('./modules/hancarsoft/hancarsoft.module').then((m) => m.HancarsoftModule),
     canActivate: [AuthGuard]

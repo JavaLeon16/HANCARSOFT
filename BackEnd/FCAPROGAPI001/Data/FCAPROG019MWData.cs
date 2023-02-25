@@ -135,7 +135,7 @@ namespace Data
                         new
                         {
                             Opcion = 5,
-                            wFechaAnterior = fechaAnterior.Replace("-", ""),
+                            wFechaAnterior = fechaAnterior != null ? fechaAnterior.Replace("-", "") : fechaAnterior,
                             Programa = Convert.ToInt32(programa),
                             ClaveMaquina = claveMaquina,
                             Turno = Convert.ToInt32(turno)
@@ -376,6 +376,425 @@ namespace Data
                         },
                     commandType: CommandType.StoredProcedure, commandTimeout: 60); // 1 mins
                     objResult.data = await result.ReadAsync<string>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+
+        // =========================================================================================================================================
+        // MODULO 2
+
+        // BUSCA PROGRAMA
+        public async Task<Result> buscaProgramaMod2(TokenData DatosToken, string programa)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    //SPNombre nombre = new SPNombre(Enums.SpTipo.Consulta);
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 11,
+                            Programa = Convert.ToInt32(programa)
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<datosBusquedaPrograma>();
+                    //objResult.totalRecords = await result.ReadFirstAsync<int>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> getClavesPreparacion(TokenData DatosToken, string claveMaquina)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    //SPNombre nombre = new SPNombre(Enums.SpTipo.Consulta);
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 12,
+                            ClaveMaquina = claveMaquina
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<clavesProcesos>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> obtenerDesperdicios(TokenData DatosToken, string op, string programa, string turno, string tipoConsulta)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    //SPNombre nombre = new SPNombre(Enums.SpTipo.Consulta);
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 13,
+                            TipoConsulta = Convert.ToInt32(tipoConsulta),
+                            OP = op,
+                            Programa = Convert.ToInt32(programa),
+                            Turno = Convert.ToInt32(turno)
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<desperdiciosCapturados>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> cargaSupsMod2(TokenData DatosToken, string programa, string turno)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    //SPNombre nombre = new SPNombre(Enums.SpTipo.Consulta);
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 14,
+                            Programa = Convert.ToInt32(programa),
+                            Turno = Convert.ToInt32(turno)
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<comboSupervisor>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> cargaSuajeMod2(TokenData DatosToken, string suaje)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    //SPNombre nombre = new SPNombre(Enums.SpTipo.Consulta);
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 15,
+                            Suaje = suaje
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<comboSuaje>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> cargaGrabadosMod2(TokenData DatosToken, string articulo)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    //SPNombre nombre = new SPNombre(Enums.SpTipo.Consulta);
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 16,
+                            Articulo = articulo
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<comboGrabado>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> cargaMaqProcAntMod2(TokenData DatosToken)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    //SPNombre nombre = new SPNombre(Enums.SpTipo.Consulta);
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 17,
+                            ZonaERP = DatosToken.Zona
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<comboMaquinas>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> cargaCantidadRecMod2(TokenData DatosToken, string op, string claveMaquina, string programa)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    //SPNombre nombre = new SPNombre(Enums.SpTipo.Consulta);
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 18,
+                            OP = op,
+                            ClaveMaquina = claveMaquina,
+                            Programa = Convert.ToInt32(programa)
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<datosBusquedaProduccion>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> cargaConceptosDesp(
+            TokenData DatosToken, string maquinaDesperdicio, string op, string programa, string claveMaquina, string turno, 
+            string aplicaCajaRec, string esUtilizado, string esContabilizadoPLC, string esProcesoAnterior
+        )
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    //SPNombre nombre = new SPNombre(Enums.SpTipo.Consulta);
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 19,
+                            MaquinaDesperdicio = maquinaDesperdicio,
+                            OP = op,
+                            Programa = Convert.ToInt32(programa),
+                            ClaveMaquina = claveMaquina,
+                            Turno = Convert.ToInt32(turno),
+                            AplicaCajaRec = Convert.ToBoolean(aplicaCajaRec == "1" ? true : false),
+                            EsUtilizado = Convert.ToBoolean(esUtilizado == "1" ? true : false),
+                            EsContabilizadoPLC = Convert.ToBoolean(esContabilizadoPLC == "1" ? true : false),
+                            EsProcesoAnterior = Convert.ToBoolean(esProcesoAnterior == "1" ? true : false)
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<conceptosDespMod2>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Result> guardarDespMod2(TokenData DatosToken, camposFrmDesp datos) 
+        {
+            Result objResult = new Result();
+
+            List<conceptosDespMod2> eDato = new List<conceptosDespMod2>();
+            conceptosDespMod2 tmp;
+            for (int i = 0; i < datos.gridDatos.Count; i++)
+            {
+                tmp = new conceptosDespMod2();
+                tmp.IdConcepto = datos.gridDatos[i].IdConcepto;
+                tmp.Concepto = datos.gridDatos[i].Concepto;
+                tmp.Cantidad = datos.gridDatos[i].Cantidad;
+                tmp.EsUtilizado = datos.gridDatos[i].EsUtilizado;
+                tmp.OP = datos.gridDatos[i].OP;
+                tmp.ClaveMaquinaDesp = datos.gridDatos[i].ClaveMaquinaDesp;
+                tmp.Programa = datos.gridDatos[i].Programa;
+                tmp.Turno = datos.gridDatos[i].Turno;
+                tmp.ClaveMaquinaCap = datos.gridDatos[i].ClaveMaquinaCap;
+                tmp.MaquinaConcepto = datos.gridDatos[i].MaquinaConcepto;
+                eDato.Add(tmp);
+            }
+
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    TranformaDataTable Ds = new TranformaDataTable();
+
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPA2",
+                        new
+                        {
+                            Opcion = 3,
+                            AplicaCajaRec = datos.AplicaCajaRec,
+                            ClaveMaquinaCap = datos.AplicaCajaRec ? datos.ClaveMaquina : datos.MaquinaDesperdicio,
+                            ClaveMaquinaDesp = datos.MaquinaDesperdicio,
+                            Programa = datos.Programa,
+                            Turno = datos.DespTurno,
+                            EsUtilizado = datos.EsUtilizado,
+                            EsProcesoAnterior = datos.EsProcesoAnterior,
+                            EsContabilizadoPLC = datos.EsContabilizadoPLC,
+                            IdTipoDesp = datos.DespId,
+                            UsuarioERP = DatosToken.Usuario,
+
+                            CMODAT382_259TD_001 = Ds.CreateDataTable(eDato).AsTableValuedParameter("CMODAT382_259TD_001")
+                        },
+                    commandType: CommandType.StoredProcedure, commandTimeout: 60); // 1 mins
+                    objResult.data = await result.ReadAsync<string>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+
+        public async Task<Result> validaDatosSupervisorMod2(TokenData DatosToken, string claveMaquina, string turno, string fecha, string claveSup, string programa)
+        {
+            Result objResult = new Result();
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPC1",
+                        new
+                        {
+                            Opcion = 20,
+                            Programa = Convert.ToInt32(programa),
+                            ClaveMaquina = claveMaquina,
+                            Turno = Convert.ToInt32(turno),
+                            Fecha = fecha.Replace("-", ""),
+                            ClaveSupervisor = claveSup
+                        },
+                    commandType: CommandType.StoredProcedure);
+                    objResult.data = await result.ReadAsync<validaDatosSupervisor>();
+                    objResult.Correcto = true;
+                }
+                return objResult;
+            }
+            catch (Exception ex)
+            {
+                objResult.Correcto = false;
+                throw new ArgumentException(ex.Message);
+            }
+        }
+
+        public async Task<Result> gardarDatosMod2(TokenData DatosToken, camposGuardado datos)
+        {
+            Result objResult = new Result();
+
+            try
+            {
+                using (var con = new SqlConnection(DatosToken.Conexion))
+                {
+                    TranformaDataTable Ds = new TranformaDataTable();
+
+                    var result = await con.QueryMultipleAsync(
+                        "FCAPROG019MWSPA2",
+                        new
+                        {
+                            Opcion = 4,
+                            UsuarioERP = DatosToken.Usuario,
+                            IgnoraTiempo = datos.IgnoraTiempo,
+                            IdUnico = datos.IdUnico,
+                            wFechaAnterior = datos.wFechaAnterior,
+                            ChkProceso = datos.ChkProceso,
+                            LSupervisor = datos.LSupervisor,
+                            LSuaje = datos.LSuaje,
+                            LGrabado = datos.LGrabado,
+                            LMinutos = datos.LMinutos,
+                            LProceso = datos.LProceso,
+                            LVelocidad = datos.LVelocidad,
+                            LEficiencia = datos.LEficiencia,
+                            LMinStd = datos.LMinStd,
+                            Programa = datos.Programa,
+                            MinStdProd = datos.MinStdProd,
+                            TxtDespCorrUtil = datos.TxtDespCorrUtil,
+                            TxtDespImprUtil = datos.TxtDespImprUtil,
+                            TxtPesoLamina = datos.TxtPesoLamina,
+                            TxtPesoCaja = datos.TxtPesoCaja,
+                            TxtRetrabajo = datos.TxtRetrabajo,
+                            CmbMaquinaPA = datos.CmbMaquinaPA,
+                            TxtDesPAUtul = datos.TxtDesPAUtul,
+                            Cant1 = datos.Cant1,
+                            Cant2 = datos.Cant2,
+                            Cant3 = datos.Cant3,
+                            Cant4 = datos.Cant4,
+                            TxtCantidad = datos.TxtCantidad,
+                            TxtCantidadCajasRec = datos.TxtCantidadCajasRec,
+                            FecProduccion = datos.FecProduccion,
+                            HoraIni = datos.HoraIni,
+                            HoraFin = datos.HoraFin,
+                            Turno = datos.Turno,
+                            IdTripulacion = datos.IdTripulacion,
+                            CmbMaquina = datos.CmbMaquina,
+                            ChkMP = datos.ChkMP
+                        },
+                    commandType: CommandType.StoredProcedure, commandTimeout: 60); // 1 mins
+                    //objResult.data = await result.ReadAsync<string>();
                     objResult.Correcto = true;
                 }
                 return objResult;

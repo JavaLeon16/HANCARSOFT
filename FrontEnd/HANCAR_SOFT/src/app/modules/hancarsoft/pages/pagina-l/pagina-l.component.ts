@@ -17,13 +17,15 @@ import {
   styleUrls: ['./pagina-l.component.css']
 })
 export class PaginaLComponent implements OnInit {
+  pModuloVisualizar: string;
   camposGenerales: camposGeneralesL = {
     pFechaDel: this.primeroDelMes(new Date()),
     pFechaAl: this.pipe.transform(new Date(), 'yyyy-MM-dd'),
     pFechaProduccion: this.pipe.transform(new Date(), 'yyyy-MM-dd'),
     pSeleccionarTodos: false, pTurno: '1', pSinFechaProd: false
   };
-  tituloModulo: string = 'Captura Estadistica Acab/Esp';
+  tituloModulo3: string = 'Captura Estadistica Acab/Esp';
+  tituloModulo2: string = 'Captura Estadísticas Producción Impresoras';
   columnasGridProgramas: any;
   datosGridProgramas = Array<listProgramasL>();
   @BlockUI() blockUI: NgBlockUI;
@@ -41,6 +43,7 @@ export class PaginaLComponent implements OnInit {
     public servicio: Fcaprog019mwService,
     private servicioActVariable: ActualizacionVariableService
   ) {
+    this.pModuloVisualizar = localStorage.getItem('pModulo');
     this.columnasGridProgramas = [
       {
         headerName: '',
@@ -76,6 +79,7 @@ export class PaginaLComponent implements OnInit {
     // for (let index = 1; index <= 100; index++) {
     //   this.datosGridProgramas.push({sel: false, programa: index, maquina: '', turno: '', op: '', idUnico: 0, fecha: ''});
     // }
+
     await this.cargaComboSupervisor();
     await this.cargaComboMaquinas();
     await this.cargaComboTripulacion();

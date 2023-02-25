@@ -147,6 +147,19 @@ export class cbxSupervisor {
   selected: string;
   datos: Array<comboSupervisor>;
 }
+export class comboSuaje {
+  codigoGrabadoSuaje: string;
+  descripcion: string;
+  compuesto: string;
+}
+export class cbxSuaje {
+  selected: string;
+  datos: Array<comboSuaje>;
+}
+export class cbxGrabado {
+  selected: string;
+  datos: Array<comboSuaje>;
+}
 export class comboParafina {
   idParafina: number;
   parafina: string;
@@ -157,6 +170,7 @@ export class cbxParafina {
 }
 export class comboMaquinas {
   claveMaquina: string;
+  nombre: string;
 }
 export class cbxMaquinas {
   selected: string;
@@ -212,4 +226,181 @@ export class programas {
 }
 export class programasSeleccionadosL {
   programasSeleccionados: Array<programas>;
+}
+
+
+
+// MODULO 2
+export class camposGeneralesMod2 {
+  wFechaAnterior: string;
+  idUnicoProduccion: string;
+  programa: number;
+  turno: string;
+  fecha: string;
+  horaIni: string;
+  horaFin: string;
+  desperdicioImpresora: number;
+  desperdicioCorrugadora: number;
+  desperdicioLinea: number;
+  pesoLamina: number;
+  pesoCaja: number;
+  retrabajo: number;
+  claveMaquina: string;
+  op: string;
+  claveProceso: string;
+  piezasCorte: number;
+  proceso1: boolean;
+  tipoMaquina: string;
+  cantidad: number;
+  programado: number;
+  ultimoProceso: boolean;
+  pegado: boolean;
+  primerColor: string;
+  cantidadPrimerColor: number;
+  segundoColor: string;
+  cantidadSegundoColor: number;
+  tercerColor: string;
+  cantidadTercerColor: number;
+  cuartoColor: string;
+  cantidadCuartoColor: number;
+  areaUnitaria: number;
+  pesoUnitario: number;
+  claveArticulo: string;
+  articulo: string;
+  suajeOld: string;
+  suaje: string;
+  liberadoCostos: boolean;
+  notasOperacion: string;
+  eficiencia: number;
+  eficienciaAct: number;
+  wEficiencia: number;
+  sinPreparacion: boolean;
+  canTinta1: number;
+  canTinta2: number;
+  canTinta3: number;
+  canTinta4: number;
+  supervisor: string;
+  proceso: string;
+  minPrep: number;
+  velocidad: number;
+  velocidadAnt: number;
+  minStdProd: number;
+  minStdAnt: number;
+  maqPA: string;
+  despPA: number;
+  utilizadoPA1: number;
+  noUtilizadoPA1: number;
+  utilizadoPA2: number;
+  contabilizadoPA: number;
+  noContabilizadoPA: number;
+  cantidadCajasRec: number;
+  maquinaProcAct: string;
+  maquinaProcAnt: string;
+
+  disabledCbxClavePreparacion: boolean;
+  disabledParafina: boolean;
+  disabledBtnAcepta: boolean;
+  disabledPanelPA: boolean;
+  disabledPanelProcesoActual: boolean;
+  disabledMaquinaPA: boolean;
+  disabledBtnConceptos2: boolean;
+}
+
+export class claveProceso {
+  claveProceso: string;
+  descripcion: string;
+  tiempoStd: number;
+  compuesto: string;
+}
+export class cbxClaveProceso {
+  selected: string;
+  selectedTmp: string;
+  datos: Array<claveProceso>;
+}
+export class desperdiciosCapturados {
+  programa: string;
+  claveMaquinaDesp: string;
+  turno: string;
+  esUtilizado: boolean;
+  totalDesperdicio: number;
+  esProcesoAnterior: boolean;
+  esContabilizadoPlc: boolean;
+}
+
+export class gridFrmDesp {
+  idConcepto: number;
+  concepto: string;
+  cantidad: number;
+  esUtilizado: boolean;
+  op: string;
+  claveMaquinaDesp: string;
+  programa: number;
+  turno: number;
+  claveMaquinaCap: string;
+  maquinaConcepto: string;
+}
+
+export class camposFrmDesp {
+  despId: number;
+  filtro: string;
+  programa: number;
+  op: string;
+  claveMaquinaCap: string;
+  maquinaDesperdicio: string;
+  capturaDesperdicio: boolean;
+  aplicaCajaRec: boolean;
+  esUtilizado: boolean;
+  esContabilizadoPLC: boolean;
+  esProcesoAnterior: boolean;
+  gridDatos: Array<gridFrmDesp>;
+  gridColumns: any;
+  totalCapturado: number;
+  modalHabilitado: boolean;
+  despTurno: number;
+}
+
+export class validaDatosSupervisor {
+    claveSupervisor: string;
+    nombreSupervisor: string;
+    turno: number;
+    claveMaquina: string;
+    fecha: string;
+    programa: number;
+}
+
+export class camposGuardado {
+  ignoraTiempo: boolean;
+  idUnico: number;
+  chkMP: boolean;
+  wFechaAnterior: string;
+  chkProceso: boolean; // ULTIMO PROCESO
+  lSupervisor: string; // CLAVE SUPERVISOR
+  lSuaje: string;
+  lGrabado: string;
+  lMinutos: number;
+  lProceso: string; // CLAVE PREPARACION
+  lVelocidad: number;
+  lEficiencia: number;
+  lMinStd: number;
+  programa: number;
+  minStdProd: number;
+  txtDespCorrUtil: number; // UTILIZADO PA1
+  txtDespImprUtil: number; // CONTABILIZADO PA
+  txtPesoLamina: number;
+  txtPesoCaja: number;
+  txtRetrabajo: number;
+  cmbMaquinaPA: string; // MAQUINA PA2
+  txtDesPAUtul: number; // UTILIZADO PA2
+  cant1: number;
+  cant2: number;
+  cant3: number;
+  cant4: number;
+  txtCantidad: number;
+  txtCantidadCajasRec: number;
+  fecProduccion: string;
+  horaIni: string;
+  horaFin: string;
+  turno: number;
+  idTripulacion: number;
+  cmbMaquina: string;
 }
