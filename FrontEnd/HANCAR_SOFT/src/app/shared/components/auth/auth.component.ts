@@ -12,6 +12,7 @@ export class AuthComponent implements OnInit {
   UserJwt: UserJwt;
   error: string;
   modulo: string;
+  pModulo: string;
   componente: string;
 
   constructor(
@@ -28,10 +29,12 @@ export class AuthComponent implements OnInit {
 
     if (!this.UserJwt.IdUsuario){
       this.rutaActiva.queryParams.subscribe(
-        (params: {pUsuario: string, pZona: string, pDatExt: string}) => {
+        (params: {pUsuario: string, pZona: string, pDatExt: string, pModulo: string}) => {
           this.UserJwt.IdUsuario = params.pUsuario;
           localStorage.setItem('Usuario', this.UserJwt.IdUsuario);
           localStorage.setItem('DatoExt', params.pDatExt);
+          this.pModulo = params.pModulo;
+          localStorage.setItem('pModulo', params.pModulo);
           this.UserJwt.Zona = params.pZona;
         }
       );
@@ -62,6 +65,7 @@ export class AuthComponent implements OnInit {
         localStorage.setItem('Usuario', this.UserJwt.IdUsuario);
         localStorage.setItem('IdUsuario', this.UserJwt.IdUsuario);
         localStorage.setItem('Modulo', this.componente);
+        localStorage.setItem('pModulo', this.pModulo);
         // redirecciona al módulo indicado
         const route = this.modulo + (this.componente ? '/' + this.componente : '');
         this.router.navigate([route]);
