@@ -152,7 +152,6 @@ export class PaginaLComponent implements OnInit {
   }
 
   async btnBuscar(): Promise<void> {
-    // PENDIENTE
     const difD = await this.dateDiff(this.camposGenerales.pFechaDel, this.camposGenerales.pFechaAl);
     if (difD >= 7 || difD < 0) {
       Swal.fire('Información', 'Solo puede seleccionar 7 días de antiguedad a la fecha actual...', 'info');

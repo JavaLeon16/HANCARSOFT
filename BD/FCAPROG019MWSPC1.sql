@@ -219,8 +219,8 @@ AS BEGIN
 		END ELSE
 		BEGIN
 			SELECT RTRIM(Programa) AS Programa, RTRIM(ClaveMaquinaDesp) AS ClaveMaquinaDesp, RTRIM(Turno) AS Turno, ISNULL(EsUtilizado, 0) AS EsUtilizado, 
-				SUM(Cantidad) AS TotalDesperdicio, ISNULL(EsProcesoAnterior, 0) AS EsProcesoAnterior, ISNULL(EsContabilizadoPlc, 0) AS EsContabilizadoPlc
-			FROM Cajas01..CmoDat259 A
+				SUM(ISNULL(Cantidad, 0)) AS TotalDesperdicio, ISNULL(EsProcesoAnterior, 0) AS EsProcesoAnterior, ISNULL(EsContabilizadoPlc, 0) AS EsContabilizadoPlc
+			FROM CmoDat259 A
 			Where A.Estatus = 0
 				AND OP = @OP
 				AND Programa = @Programa
@@ -289,51 +289,111 @@ AS BEGIN
 	BEGIN
 		IF ISNULL(@AplicaCajaRec, 0) = 1
 		BEGIN
-			SELECT A.IdConcepto, RTRIM(A.Concepto) AS Concepto, ISNULL(C.Cantidad, 0) As Cantidad, 
-				RTRIM(C.OP) AS OP, RTRIM(C.CveMaquinaCap) AS ClaveMaquinaCap, C.Programa, C.Turno
-			FROM CmoCat134 A
-			LEFT JOIN CmoDat258 B ON A.IdConcepto = B.IdConcepto
-				AND B.ClaveMaquina = @MaquinaDesperdicio
-			LEFT JOIN CMODAT382 C ON A.IdConcepto = C.IdConcepto
-				AND ISNULL(C.OP, @OP) = @OP
-				AND ISNULL(C.Programa, @Programa) = @Programa
-				AND ISNULL(C.CveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
-				AND ISNULL(C.Turno, @Turno) = @Turno
-			WHERE a.Estatus = 0
-				AND ISNULL(C.OP, @OP) = @OP
-				AND ISNULL(C.Programa, @Programa) = @Programa
-				AND ISNULL(C.CveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
-				AND ISNULL(C.Turno, @Turno) = @Turno
-				AND ISNULL(A.AplicaRecuperacionCaja, @AplicaCajaRec) = @AplicaCajaRec
-			ORDER BY A.Concepto;
+			IF EXISTS(
+				SELECT 1
+				FROM CmoCat134 A
+				LEFT JOIN CmoDat258 B ON A.IdConcepto = B.IdConcepto
+					AND B.ClaveMaquina = @MaquinaDesperdicio
+				LEFT JOIN CMODAT382 C ON A.IdConcepto = C.IdConcepto
+					AND ISNULL(C.OP, @OP) = @OP
+					AND ISNULL(C.Programa, @Programa) = @Programa
+					AND ISNULL(C.CveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
+					AND ISNULL(C.Turno, @Turno) = @Turno
+				WHERE a.Estatus = 0
+					AND ISNULL(C.OP, @OP) = @OP
+					AND ISNULL(C.Programa, @Programa) = @Programa
+					AND ISNULL(C.CveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
+					AND ISNULL(C.Turno, @Turno) = @Turno
+					AND ISNULL(A.AplicaRecuperacionCaja, @AplicaCajaRec) = @AplicaCajaRec
+				--ORDER BY A.Concepto
+			)
+			BEGIN
+				SELECT A.IdConcepto, RTRIM(A.Concepto) AS Concepto, ISNULL(C.Cantidad, 0) As Cantidad, 
+					RTRIM(C.OP) AS OP, RTRIM(C.CveMaquinaCap) AS ClaveMaquinaCap, C.Programa, C.Turno
+				FROM CmoCat134 A
+				LEFT JOIN CmoDat258 B ON A.IdConcepto = B.IdConcepto
+					AND B.ClaveMaquina = @MaquinaDesperdicio
+				LEFT JOIN CMODAT382 C ON A.IdConcepto = C.IdConcepto
+					AND ISNULL(C.OP, @OP) = @OP
+					AND ISNULL(C.Programa, @Programa) = @Programa
+					AND ISNULL(C.CveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
+					AND ISNULL(C.Turno, @Turno) = @Turno
+				WHERE a.Estatus = 0
+					AND ISNULL(C.OP, @OP) = @OP
+					AND ISNULL(C.Programa, @Programa) = @Programa
+					AND ISNULL(C.CveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
+					AND ISNULL(C.Turno, @Turno) = @Turno
+					AND ISNULL(A.AplicaRecuperacionCaja, @AplicaCajaRec) = @AplicaCajaRec
+				ORDER BY A.Concepto;
+			END ELSE
+			BEGIN
+				SELECT A.IdConcepto, A.Concepto
+				FROM Cajas01..CmoCat134 A
+				LEFT JOIN Cajas01..CmoDat258 B ON A.IdConcepto = B.IdConcepto AND B.ClaveMaquina = @ClaveMaquina
+				WHERE a.Estatus = 0
+			END
 		END ELSE
 		BEGIN
-			SELECT A.IdConcepto, RTRIM(A.Concepto) AS Concepto, ISNULL(C.Cantidad, 0) AS Cantidad, C.EsUtilizado, RTRIM(C.OP) AS OP, 
-				RTRIM(C.ClaveMaquinaDesp) AS ClaveMaquinaDesp, RTRIM(C.Programa) AS Programa, RTRIM(C.Turno) AS Turno, 
-				RTRIM(C.ClaveMaquinaCap) AS ClaveMaquinaCap, RTRIM(B.ClaveMaquina) AS MaquinaConcepto
-			FROM CmoCat134 A
-			JOIN CmoDat258 B ON A.IdConcepto = B.IdConcepto
-				AND B.ClaveMaquina = @MaquinaDesperdicio
-			LEFT JOIN CmoDat259 C ON B.IdConcepto = C.IdConcepto
-				AND B.ClaveMaquina = C.ClaveMaquinaDesp
-				AND ISNULL(C.OP, @OP) = @OP
-				AND ISNULL(C.Programa, @Programa) = @Programa
-				AND ISNULL(C.claveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
-				AND ISNULL(C.Turno, @Turno) = @Turno
-				AND ISNULL(C.EsUtilizado, @EsUtilizado) = @EsUtilizado
-				AND ISNULL(C.EsContabilizadoPLC, @EsContabilizadoPLC) = @EsContabilizadoPLC
-				AND ISNULL(C.EsProcesoAnterior, @EsProcesoAnterior) = @EsProcesoAnterior
-				AND ISNULL(C.ClaveMaquinaDesp, @MaquinaDesperdicio) = @MaquinaDesperdicio
-			WHERE A.Estatus = 0
-				AND ISNULL(C.OP, @OP) = @OP
-				AND ISNULL(C.Programa, @Programa) = @Programa
-				AND ISNULL(C.claveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
-				AND ISNULL(C.Turno, @Turno) = @Turno
-				AND ISNULL(C.EsUtilizado, @EsUtilizado) = @EsUtilizado
-				AND ISNULL(C.EsContabilizadoPLC, @EsContabilizadoPLC) = @EsContabilizadoPLC
-				AND ISNULL(C.EsProcesoAnterior, @EsProcesoAnterior) = @EsProcesoAnterior
-				AND ISNULL(C.ClaveMaquinaDesp, @MaquinaDesperdicio) = @MaquinaDesperdicio
-			ORDER BY A.Concepto
+			IF EXISTS(
+				SELECT 1 
+				FROM CmoCat134 A
+				JOIN CmoDat258 B ON A.IdConcepto = B.IdConcepto
+					AND B.ClaveMaquina = @MaquinaDesperdicio
+				LEFT JOIN CmoDat259 C ON B.IdConcepto = C.IdConcepto
+					AND B.ClaveMaquina = C.ClaveMaquinaDesp
+					AND ISNULL(C.OP, @OP) = @OP
+					AND ISNULL(C.Programa, @Programa) = @Programa
+					AND ISNULL(C.claveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
+					AND ISNULL(C.Turno, @Turno) = @Turno
+					AND ISNULL(C.EsUtilizado, @EsUtilizado) = @EsUtilizado
+					AND ISNULL(C.EsContabilizadoPLC, @EsContabilizadoPLC) = @EsContabilizadoPLC
+					AND ISNULL(C.EsProcesoAnterior, @EsProcesoAnterior) = @EsProcesoAnterior
+					AND ISNULL(C.ClaveMaquinaDesp, @MaquinaDesperdicio) = @MaquinaDesperdicio
+				WHERE A.Estatus = 0
+					AND ISNULL(C.OP, @OP) = @OP
+					AND ISNULL(C.Programa, @Programa) = @Programa
+					AND ISNULL(C.claveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
+					AND ISNULL(C.Turno, @Turno) = @Turno
+					AND ISNULL(C.EsUtilizado, @EsUtilizado) = @EsUtilizado
+					AND ISNULL(C.EsContabilizadoPLC, @EsContabilizadoPLC) = @EsContabilizadoPLC
+					AND ISNULL(C.EsProcesoAnterior, @EsProcesoAnterior) = @EsProcesoAnterior
+					AND ISNULL(C.ClaveMaquinaDesp, @MaquinaDesperdicio) = @MaquinaDesperdicio
+				--ORDER BY A.Concepto
+			)
+			BEGIN
+				SELECT A.IdConcepto, RTRIM(A.Concepto) AS Concepto, ISNULL(C.Cantidad, 0) AS Cantidad, C.EsUtilizado, RTRIM(C.OP) AS OP, 
+					RTRIM(C.ClaveMaquinaDesp) AS ClaveMaquinaDesp, RTRIM(C.Programa) AS Programa, RTRIM(C.Turno) AS Turno, 
+					RTRIM(C.ClaveMaquinaCap) AS ClaveMaquinaCap, RTRIM(B.ClaveMaquina) AS MaquinaConcepto
+				FROM CmoCat134 A
+				JOIN CmoDat258 B ON A.IdConcepto = B.IdConcepto
+					AND B.ClaveMaquina = @MaquinaDesperdicio
+				LEFT JOIN CmoDat259 C ON B.IdConcepto = C.IdConcepto
+					AND B.ClaveMaquina = C.ClaveMaquinaDesp
+					AND ISNULL(C.OP, @OP) = @OP
+					AND ISNULL(C.Programa, @Programa) = @Programa
+					AND ISNULL(C.claveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
+					AND ISNULL(C.Turno, @Turno) = @Turno
+					AND ISNULL(C.EsUtilizado, @EsUtilizado) = @EsUtilizado
+					AND ISNULL(C.EsContabilizadoPLC, @EsContabilizadoPLC) = @EsContabilizadoPLC
+					AND ISNULL(C.EsProcesoAnterior, @EsProcesoAnterior) = @EsProcesoAnterior
+					AND ISNULL(C.ClaveMaquinaDesp, @MaquinaDesperdicio) = @MaquinaDesperdicio
+				WHERE A.Estatus = 0
+					AND ISNULL(C.OP, @OP) = @OP
+					AND ISNULL(C.Programa, @Programa) = @Programa
+					AND ISNULL(C.claveMaquinaCap, @ClaveMaquina) = @ClaveMaquina
+					AND ISNULL(C.Turno, @Turno) = @Turno
+					AND ISNULL(C.EsUtilizado, @EsUtilizado) = @EsUtilizado
+					AND ISNULL(C.EsContabilizadoPLC, @EsContabilizadoPLC) = @EsContabilizadoPLC
+					AND ISNULL(C.EsProcesoAnterior, @EsProcesoAnterior) = @EsProcesoAnterior
+					AND ISNULL(C.ClaveMaquinaDesp, @MaquinaDesperdicio) = @MaquinaDesperdicio
+				ORDER BY A.Concepto
+			END ELSE
+			BEGIN
+				SELECT A.IdConcepto, A.Concepto
+				FROM Cajas01..CmoCat134 A
+				INNER JOIN Cajas01..CmoDat258 B ON A.IdConcepto = B.IdConcepto AND B.ClaveMaquina = @ClaveMaquina
+				WHERE a.Estatus = 0
+			END
 		END
 	END
 	-- VALIDA DATOS SUPERVISOR AL GUARDAR

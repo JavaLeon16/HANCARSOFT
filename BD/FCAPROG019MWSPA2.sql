@@ -172,7 +172,7 @@ AS BEGIN
 					WHERE IdConcepto = @IdConcepto AND CveMaquinaCap = @ClavemaquinaDesp AND Programa = @Programa 
 						AND Turno = @Turno AND CveMaquinaCap = @ClaveMaquinaCap;
 
-					IF @@ROWCOUNT = 0
+					IF @@ROWCOUNT = 0 AND ISNULL(@Cantidad, 0) > 0
 					BEGIN
 						INSERT INTO CMODAT382 ([OP],[Programa],[CveMaquinaCap],[Turno],[IdConcepto],[Cantidad],UsuarioInsert,FechaInsert,UsuarioUpdate,FechaUpdate,Estatus)
 						VALUES (@OP, @Programa, @ClaveMaquinaDesp, @Turno, @IdConcepto, @Cantidad, @UsuarioERP, GETDATE(), NULL, NULL, 0);
@@ -192,7 +192,7 @@ AS BEGIN
 						AND Turno = @Turno AND EsUtilizado = @EsUtilizado AND EsProcesoAnterior = @EsProcesoAnterior
 						AND ClaveMaquinaCap = @ClaveMaquinaCap AND EsContabilizadoPLC = @EsContabilizadoPLC AND IdTipoDesp = @IdTipoDesp;
 
-					IF @@ROWCOUNT = 0
+					IF @@ROWCOUNT = 0 AND ISNULL(@Cantidad, 0) > 0
 					BEGIN
 						INSERT INTO CmoDat259 ([OP],[Programa],[ClaveMaquinaDesp],[IdConcepto],[Cantidad],[Turno],[EsUtilizado],[EsProcesoAnterior],[ClaveMaquinaCap],[EsContabilizadoPLC],[IdTipoDesp])
 						VALUES (@OP, @Programa, @ClaveMaquinaDesp, @IdConcepto, @Cantidad, @Turno, @EsUtilizado, @EsProcesoAnterior, @ClaveMaquinaCap, @EsContabilizadoPLC, @IdTipoDesp);

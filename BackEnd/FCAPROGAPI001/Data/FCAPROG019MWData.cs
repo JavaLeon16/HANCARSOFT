@@ -658,19 +658,19 @@ namespace Data
 
             List<conceptosDespMod2> eDato = new List<conceptosDespMod2>();
             conceptosDespMod2 tmp;
-            for (int i = 0; i < datos.gridDatos.Count; i++)
+            for (int i = 0; i < datos.GridDatos.Count; i++)
             {
                 tmp = new conceptosDespMod2();
-                tmp.IdConcepto = datos.gridDatos[i].IdConcepto;
-                tmp.Concepto = datos.gridDatos[i].Concepto;
-                tmp.Cantidad = datos.gridDatos[i].Cantidad;
-                tmp.EsUtilizado = datos.gridDatos[i].EsUtilizado;
-                tmp.OP = datos.gridDatos[i].OP;
-                tmp.ClaveMaquinaDesp = datos.gridDatos[i].ClaveMaquinaDesp;
-                tmp.Programa = datos.gridDatos[i].Programa;
-                tmp.Turno = datos.gridDatos[i].Turno;
-                tmp.ClaveMaquinaCap = datos.gridDatos[i].ClaveMaquinaCap;
-                tmp.MaquinaConcepto = datos.gridDatos[i].MaquinaConcepto;
+                tmp.IdConcepto = datos.GridDatos[i].IdConcepto;
+                tmp.Concepto = datos.GridDatos[i].Concepto;
+                tmp.Cantidad = datos.GridDatos[i].Cantidad;
+                tmp.EsUtilizado = datos.GridDatos[i].EsUtilizado;
+                tmp.Op = datos.GridDatos[i].Op;
+                tmp.ClaveMaquinaDesp = datos.GridDatos[i].ClaveMaquinaDesp;
+                tmp.Programa = datos.GridDatos[i].Programa;
+                tmp.Turno = datos.GridDatos[i].Turno;
+                tmp.ClaveMaquinaCap = datos.GridDatos[i].ClaveMaquinaCap;
+                tmp.MaquinaConcepto = datos.GridDatos[i].MaquinaConcepto;
                 eDato.Add(tmp);
             }
 
@@ -686,7 +686,7 @@ namespace Data
                         {
                             Opcion = 3,
                             AplicaCajaRec = datos.AplicaCajaRec,
-                            ClaveMaquinaCap = datos.AplicaCajaRec ? datos.ClaveMaquina : datos.MaquinaDesperdicio,
+                            ClaveMaquinaCap = datos.MaquinaDesperdicio, // datos.AplicaCajaRec ? datos.ClaveMaquina : datos.MaquinaDesperdicio,
                             ClaveMaquinaDesp = datos.MaquinaDesperdicio,
                             Programa = datos.Programa,
                             Turno = datos.DespTurno,

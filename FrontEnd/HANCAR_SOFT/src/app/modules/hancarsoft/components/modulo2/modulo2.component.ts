@@ -24,6 +24,7 @@ import { Fcaprog019mwService } from 'src/app/services/fcaprog019mw.service';
 import { cloneDeep } from 'lodash-es';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { GridModel } from '../../../../models/common/gridModel';
+import { ActualizacionVariableService } from 'src/app/services/actualizacion-variable.service';
 
 @Component({
   selector: 'app-modulo2',
@@ -58,7 +59,8 @@ export class Modulo2Component implements OnInit {
   constructor(
     private modalService: NgbModal,
     public pipe: DatePipe,
-    public servicio: Fcaprog019mwService
+    public servicio: Fcaprog019mwService,
+    private servicioActVariable: ActualizacionVariableService
   ) {
     this.columnasGridValidacion = [
       {
@@ -123,6 +125,13 @@ export class Modulo2Component implements OnInit {
     this.pZonaERP = localStorage.getItem('Zona');
     this.limpiarCampos();
     this.inicializarCbxClavePreparacion('CECS2');
+    if (this.abiertoDesdeModuloL) {
+      this.servicioActVariable.pPrograma$.subscribe(async data => {
+        this.camposGenerales.programa = data;
+        await this.btnBuscarPrograma();
+        // console.log(`El valor de la variable cambio a: ${data}`);
+      });
+    }
   }
 
   limpiarCampos(): void {
@@ -196,7 +205,7 @@ export class Modulo2Component implements OnInit {
       disabledParafina: false,
       disabledBtnAcepta: false,
       disabledPanelPA: true,
-      disabledPanelProcesoActual: true,
+      disabledPanelProcesoActual: false,
       disabledMaquinaPA: true,
       disabledBtnConceptos2: true,
     };
@@ -271,12 +280,15 @@ export class Modulo2Component implements OnInit {
     this.servicio.guardarDespMod2(this.camposFrmDesp).subscribe(async (res: any) => {
       this.blockUI.stop();
       if (res.correcto) {
-        if (this.camposFrmDesp.despId === 1) { this.camposGenerales.utilizadoPA1 = this.camposFrmDesp.totalCapturado; }
-        else if (this.camposFrmDesp.despId === 2) { this.camposGenerales.noUtilizadoPA1 = this.camposFrmDesp.totalCapturado; }
-        else if (this.camposFrmDesp.despId === 3) { this.camposGenerales.utilizadoPA2 = this.camposFrmDesp.totalCapturado; }
-        else if (this.camposFrmDesp.despId === 4) { this.camposGenerales.despPA = this.camposFrmDesp.totalCapturado; }
-        else if (this.camposFrmDesp.despId === 5) { this.camposGenerales.contabilizadoPA = this.camposFrmDesp.totalCapturado; }
-        else if (this.camposFrmDesp.despId === 6) { this.camposGenerales.noContabilizadoPA = this.camposFrmDesp.totalCapturado; }
+        if (this.camposFrmDesp.capturaDesperdicio) {
+          if (this.camposFrmDesp.despId === 1) { this.camposGenerales.utilizadoPA1 = this.camposFrmDesp.totalCapturado; }
+          else if (this.camposFrmDesp.despId === 2) { this.camposGenerales.noUtilizadoPA1 = this.camposFrmDesp.totalCapturado; }
+          else if (this.camposFrmDesp.despId === 3) { this.camposGenerales.utilizadoPA2 = this.camposFrmDesp.totalCapturado; }
+          else if (this.camposFrmDesp.despId === 4) { this.camposGenerales.despPA = this.camposFrmDesp.totalCapturado; }
+          else if (this.camposFrmDesp.despId === 5) { this.camposGenerales.contabilizadoPA = this.camposFrmDesp.totalCapturado; }
+          else if (this.camposFrmDesp.despId === 6) { this.camposGenerales.noContabilizadoPA = this.camposFrmDesp.totalCapturado; }
+        }
+
 
         if (this.camposFrmDesp.aplicaCajaRec) { this.camposGenerales.cantidadCajasRec = this.camposFrmDesp.totalCapturado; }
 
@@ -332,6 +344,7 @@ export class Modulo2Component implements OnInit {
           this.camposGenerales.disabledPanelPA = false;
           this.camposGenerales.disabledMaquinaPA = false;
           this.camposGenerales.disabledBtnConceptos2 = false;
+          this.camposGenerales.disabledPanelProcesoActual = false;
 
           if (this.pZonaERP === '01') {
             if (
@@ -582,9 +595,11 @@ export class Modulo2Component implements OnInit {
           size: 'xl',
           backdrop: 'static',
         });
+        this.camposGenerales.disabledPanelPA = false;
         this.camposGenerales.disabledPanelProcesoActual = false;
       } else {
         this.limpiarCampos();
+        this.camposGenerales.disabledPanelPA = true;
         this.camposGenerales.disabledPanelProcesoActual = true;
       }
     } else {
@@ -908,7 +923,7 @@ export class Modulo2Component implements OnInit {
     this.controlFocusName = this.txtImpresoraNoCon;
   }
   m2_txtCantidadCajasRec_focus(): void {
-    this.controlFocusName = this.txtImpresoraNoCon;
+    this.controlFocusName = this.txtCantidadCajasRec;
   }
 
   // mdlDesp_Filtro(): void {

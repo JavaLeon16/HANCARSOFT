@@ -128,6 +128,7 @@
                       type="checkbox"
                       id="m2_chkUltimoProceso"
                       [(ngModel)]="camposGenerales.ultimoProceso"
+                      disabled
                     />
                     <label
                       class="form-check-label text-left w-100"
@@ -151,6 +152,7 @@
                       type="checkbox"
                       id="m2_chkPegado"
                       [(ngModel)]="camposGenerales.pegado"
+                      disabled
                     />
                     <label
                       class="form-check-label text-left w-100"
@@ -208,12 +210,12 @@
         >
           <div class="input-group">
             <div class="input-group-prepend">
-              <label class="input-group-text" for="m2_cbxGrabacion"
-                >Grabación:</label
+              <label class="input-group-text" for="m2_cbxGrabado"
+                >Grabado:</label
               >
             </div>
             <select
-              id="m2_cbxGrabacion"
+              id="m2_cbxGrabado"
               class="custom-select"
               [(ngModel)]="cbxGrabado.selected"
             >
@@ -445,6 +447,7 @@
                 placeholder="Cantidad"
                 class="form-control"
                 [(ngModel)]="camposGenerales.cantidadPrimerColor"
+                [disabled]="!camposGenerales.primerColor"
               />
             </div>
           </div>
@@ -470,6 +473,7 @@
                 placeholder="Cantidad"
                 class="form-control"
                 [(ngModel)]="camposGenerales.cantidadSegundoColor"
+                [disabled]="!camposGenerales.segundoColor"
               />
             </div>
           </div>
@@ -495,6 +499,7 @@
                 placeholder="Cantidad"
                 class="form-control"
                 [(ngModel)]="camposGenerales.cantidadTercerColor"
+                [disabled]="!camposGenerales.tercerColor"
               />
             </div>
           </div>
@@ -520,6 +525,7 @@
                 placeholder="Cantidad"
                 class="form-control"
                 [(ngModel)]="camposGenerales.cantidadCuartoColor"
+                [disabled]="!camposGenerales.cuartoColor"
               />
             </div>
           </div>
@@ -668,7 +674,7 @@
           <div class="col-12 col-sm-12 col-md-4 col-lg-12 col-xl-4">
             <fieldset
               class="scheduler-border-hijo"
-              [disabled]="camposGenerales.disabledPanelPA"
+              [disabled]="!camposGenerales.disabledPanelPA"
             >
               <legend class="scheduler-border-hijo">
                 &nbsp;Proceso Anterior
@@ -761,7 +767,7 @@
           <div class="col-12 col-sm-12 col-md-4 col-lg-12 col-xl-4">
             <fieldset
               class="scheduler-border-hijo"
-              [disabled]="camposGenerales.disabledPanelProcesoActual"
+              [disabled]="!camposGenerales.disabledPanelProcesoActual"
             >
               <legend class="scheduler-border-hijo">
                 &nbsp;Proceso Actual

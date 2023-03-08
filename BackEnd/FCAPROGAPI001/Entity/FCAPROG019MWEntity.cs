@@ -202,7 +202,7 @@ namespace Entity
         public string Concepto { get; set; }
         public int Cantidad { get; set; }
         public bool EsUtilizado { get; set; }
-        public string OP { get; set; }
+        public string Op { get; set; }
         public string ClaveMaquinaDesp { get; set; }
         public int Programa { get; set; }
         public int Turno { get; set; }
@@ -225,10 +225,10 @@ namespace Entity
         public int TotalCapturado { get; set; }
         public int DespTurno { get; set; }
 
-        public List<conceptosDespMod2> gridDatos;
+        public List<conceptosDespMod2> GridDatos { get; set; }
         camposFrmDesp()
         {
-            gridDatos = new List<conceptosDespMod2>();
+            GridDatos = new List<conceptosDespMod2>();
         }
     }
 
